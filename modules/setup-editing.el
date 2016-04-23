@@ -4,9 +4,9 @@
   (indent-region (point-min) (point-max)))
 
 (defcustom prelude-indent-sensitive-modes
-    '(coffee-mode python-mode slim-mode haml-mode yaml-mode)
-      "Modes for which auto-indenting is suppressed."
-        :type 'list)
+  '(coffee-mode python-mode slim-mode haml-mode yaml-mode)
+  "Modes for which auto-indenting is suppressed."
+  :type 'list)
 
 (defun indent-region-or-buffer ()
   "Indent a region if selected, otherwise the whole buffer."
@@ -90,5 +90,17 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; disable bell
 (setq visible-bell 1)
+
+(which-function-mode)
+
+(setq mode-line-format (delete (assoc 'which-func-mode
+                                      mode-line-format) mode-line-format)
+      which-func-header-line-format '(which-func-mode ("" which-func-format)))
+
+(defadvice which-func-ff-hook (after header-line activate)
+  (when which-func-mode
+    (setq mode-line-format (delete (assoc 'which-func-mode
+                                          mode-line-format) mode-line-format)
+          header-line-format which-func-header-line-format)))
 
 (provide 'setup-editing)
