@@ -1,6 +1,10 @@
 ;; ------------ PACKAGES ----------------------
 (defconst orilla-packages
-  '(projectile
+  '(helm
+    helm-gtags
+    helm-projectile
+    helm-swoop
+    projectile
     smartparens
     smooth-scroll
     ))
@@ -11,6 +15,11 @@
 ;; ------------------- INIT PACKAGES --------------------------
 (require 'setup-packages)
 (install-packages orilla-packages)
+
+;; ------------------- Early customization ---------------------
+;; this variables must be set before load helm-gtags
+;; you can change to any prefix key of your choice
+(setq helm-gtags-prefix-key "\C-cg")
 
 ;; ------------------- SANE SETTINGS ---------------------------
 
@@ -41,8 +50,16 @@
 ;; this is to use shift + arrow keys to switch between windows
 (windmove-default-keybindings)
 
+(require 'setup-helm)
+(require 'setup-helm-gtags)
+
 ;; setup general editing
 (require 'setup-editing)
+
+(require 'helm-projectile)
+(helm-projectile-on)
+(setq projectile-completion-system 'helm)
+(setq projectile-indexing-method 'alien)
 
 ;; setup c++ indentation and style, fix C++11 issues
 (require 'setup-cpp)
