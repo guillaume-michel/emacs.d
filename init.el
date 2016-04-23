@@ -1,9 +1,12 @@
 ;; ------------ PACKAGES ----------------------
 (defconst orilla-packages
-  '(helm
+  '(company
+    company-irony
+    helm
     helm-gtags
     helm-projectile
     helm-swoop
+    irony
     projectile
     smartparens
     smooth-scroll
@@ -37,6 +40,9 @@
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
+;; disable menu bar
+(menu-bar-mode -1)
+
 ;; scroll one line at a time (less "jumpy" than defaults)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
@@ -63,6 +69,9 @@
 
 ;; setup c++ indentation and style, fix C++11 issues
 (require 'setup-cpp)
+
+;; setup company and irony mode for code completion with clang
+(require 'setup-completion)
 
 (global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
 
