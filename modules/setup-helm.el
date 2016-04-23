@@ -93,5 +93,6 @@
 (setq helm-swoop-speed-or-color t)
 
 (helm-mode 1)
+(helm-autoresize-mode t)
 
 (provide 'setup-helm)
