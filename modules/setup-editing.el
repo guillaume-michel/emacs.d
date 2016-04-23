@@ -58,6 +58,19 @@ point reaches the beginning or end of the buffer, stop there."
 (setq show-paren-delay 0)
 (show-paren-mode 1)
 
+;; Package: smartparens
+(require 'smartparens-config)
+(setq sp-base-key-bindings 'paredit)
+(setq sp-autoskip-closing-pair 'always)
+(setq sp-hybrid-kill-entire-symbol nil)
+(setq sp-highlight-pair-overlay nil)
+(setq sp-highlight-wrap-overlay nil)
+(setq sp-highlight-wrap-tag-overlay nil)
+(sp-use-paredit-bindings)
+
+(show-smartparens-global-mode t)
+(smartparens-global-mode t)
+
 ;; highlight the current line
 (global-hl-line-mode 1)
 (set-face-background 'hl-line "#202020")
@@ -74,5 +87,8 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'lisp-mode-hook       'hs-minor-mode)
 (add-hook 'perl-mode-hook       'hs-minor-mode)
 (add-hook 'sh-mode-hook         'hs-minor-mode)
+
+;; disable bell
+(setq visible-bell 1)
 
 (provide 'setup-editing)

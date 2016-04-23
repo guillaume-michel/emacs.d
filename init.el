@@ -1,6 +1,7 @@
 ;; ------------ PACKAGES ----------------------
 (defconst orilla-packages
-  '(smooth-scroll
+  '(smartparens
+    smooth-scroll
     ))
 
 ;; ------------------ VARIABLES -------------------------------
