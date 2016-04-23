@@ -1,6 +1,7 @@
 ;; ------------ PACKAGES ----------------------
 (defconst orilla-packages
-  '(smartparens
+  '(projectile
+    smartparens
     smooth-scroll
     ))
 
@@ -91,6 +92,18 @@
                   week))
       (message "%s" file)
       (delete-file file))))
+
+;; Package: projejctile
+(require 'projectile)
+(projectile-global-mode)
+(setq projectile-enable-caching t)
+
+;; shortcuts with SUPER but doesn't work on OSX
+;;(define-key projectile-mode-map [?\s-d] 'projectile-find-dir)
+;;(define-key projectile-mode-map [?\s-p] 'projectile-switch-project)
+;;(define-key projectile-mode-map [?\s-f] 'projectile-find-file)
+;;(define-key projectile-mode-map [?\s-g] 'projectile-grep)
+
 
 ;; setup slime
 (load (expand-file-name "~/quicklisp/slime-helper.el"))
