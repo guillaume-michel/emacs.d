@@ -48,4 +48,31 @@ point reaches the beginning or end of the buffer, stop there."
 
 (global-set-key (kbd "C-a") 'prelude-move-beginning-of-line)
 
+;; revert buffers automatically when underlying files are changed externally
+(global-auto-revert-mode t)
+
+;; disable annoying blink-matching-paren
+(setq blink-matching-paren nil)
+
+;; show matching paren
+(setq show-paren-delay 0)
+(show-paren-mode 1)
+
+;; highlight the current line
+(global-hl-line-mode 1)
+(set-face-background 'hl-line "#202020")
+(set-face-foreground 'highlight nil)
+
+;; line numbers
+(global-linum-mode t)
+(setq linum-format "%4d \u2502 ")
+
+;; folding
+(add-hook 'c-mode-common-hook   'hs-minor-mode)
+(add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+(add-hook 'java-mode-hook       'hs-minor-mode)
+(add-hook 'lisp-mode-hook       'hs-minor-mode)
+(add-hook 'perl-mode-hook       'hs-minor-mode)
+(add-hook 'sh-mode-hook         'hs-minor-mode)
+
 (provide 'setup-editing)
