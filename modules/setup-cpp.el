@@ -10,8 +10,16 @@
 ;; set style to "guillaume"
 (setq c-default-style "guillaume")
 
-;; This hack fixes indentation for C++11's "enum class" in Emacs.
+;; This hack fixes indentation for C++11's "enum class" and other minor issues with template member functions in Emacs.
 ;; http://stackoverflow.com/questions/6497374/emacs-cc-mode-indentation-problem-with-c0x-enum-class/6550361#6550361
+
+(defun inside-template-p (pos)
+  "Checks if POS is within a template definition"
+  (ignore-errors
+    (save-excursion
+      (goto-char pos)
+      ;;(message (thing-at-point 'line))
+      (looking-at "template[ \t]*<.*>"))))
 
 (defun inside-class-enum-p (pos)
   "Checks if POS is within the braces of a C++ \"enum class\"."
@@ -22,22 +30,28 @@
       (backward-sexp 1)
       (looking-back "enum[ \t]+class[ \t]+[^}]*"))))
 
-(defun align-enum-class (langelem)
+(defun custom-topmost-intro-cont (langelem)
   (if (inside-class-enum-p (c-langelem-pos langelem))
       0
     (c-lineup-topmost-intro-cont langelem)))
 
-(defun align-enum-class-closing-brace (langelem)
-  (if (inside-class-enum-p (c-langelem-pos langelem))
-      '-
-    '+))
+(defun custom-statement-cont (langelem)
+  (cond ((inside-class-enum-p (c-langelem-pos langelem))
+         ;;(message "inside enum class!!!!!!")
+         '-)
+        ((inside-template-p (c-langelem-pos langelem))
+         ;;(message "inside template!!!!!!")
+         0)
+        (t
+         ;;(message "default for statement-cont!!!!!!")
+         '+)))
 
-(defun fix-enum-class ()
-  "Setup `c++-mode' to better handle \"class enum\"."
-  (add-to-list 'c-offsets-alist '(topmost-intro-cont . align-enum-class))
-  (add-to-list 'c-offsets-alist '(statement-cont . align-enum-class-closing-brace)))
+(defun fix-cpp11-indentation ()
+  "Setup `c++-mode' to better handle C++11 code indentation"
+  (add-to-list 'c-offsets-alist '(topmost-intro-cont . custom-topmost-intro-cont))
+  (add-to-list 'c-offsets-alist '(statement-cont . custom-statement-cont)))
 
-(add-hook 'c++-mode-hook 'fix-enum-class)
+(add-hook 'c++-mode-hook 'fix-cpp11-indentation)
 
 ;; Fix indentation issue for lambda
 (defadvice c-lineup-arglist (around my activate)
