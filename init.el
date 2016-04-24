@@ -2,6 +2,7 @@
 (defconst orilla-packages
   '(bind-key
     clean-aindent-mode
+    color-theme
     company
     company-irony
     diminish
@@ -62,6 +63,9 @@
 
 ;; this is to use shift + arrow keys to switch between windows
 (windmove-default-keybindings)
+
+;; Theme
+(require 'setup-theme)
 
 (require 'setup-helm)
 (require 'setup-helm-gtags)
