@@ -103,4 +103,8 @@ point reaches the beginning or end of the buffer, stop there."
                                           mode-line-format) mode-line-format)
           header-line-format which-func-header-line-format)))
 
+;;(use-package flycheck
+;;  :ensure t
+;;  :init (global-flycheck-mode))
+
 (provide 'setup-editing)

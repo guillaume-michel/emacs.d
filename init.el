@@ -4,6 +4,7 @@
     company
     company-irony
     diminish
+    flycheck
     helm
     helm-gtags
     helm-projectile
