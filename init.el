@@ -1,7 +1,9 @@
 ;; ------------ PACKAGES ----------------------
 (defconst orilla-packages
-  '(company
+  '(bind-key
+    company
     company-irony
+    diminish
     helm
     helm-gtags
     helm-projectile

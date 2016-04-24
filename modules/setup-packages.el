@@ -8,6 +8,8 @@
   (package-refresh-contents)
   (package-install 'use-package))
 (eval-when-compile (require 'use-package))
+(require 'diminish)
+(require 'bind-key)
 
 (defun install-packages (packages)
   "Install all required packages."
