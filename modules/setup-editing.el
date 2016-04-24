@@ -107,4 +107,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;;  :ensure t
 ;;  :init (global-flycheck-mode))
 
+;; Package zygospore
+(global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows)
+
 (provide 'setup-editing)

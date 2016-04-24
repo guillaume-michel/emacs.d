@@ -35,4 +35,13 @@
   :bind ("C-TAB" . company-complete-common)
   )
 
+;; Yasnippet
+(use-package yasnippet
+  :ensure t
+  :defer t
+  :init (add-hook 'after-init-hook 'yas-global-mode)
+  :config
+  (setq yas-snippet-dirs
+        '("~/.emacs.d/snippets")))
+
 (provide 'setup-completion)

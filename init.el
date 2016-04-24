@@ -1,6 +1,7 @@
 ;; ------------ PACKAGES ----------------------
 (defconst orilla-packages
   '(bind-key
+    clean-aindent-mode
     company
     company-irony
     diminish
@@ -13,6 +14,9 @@
     projectile
     smartparens
     smooth-scroll
+    ws-butler
+    yasnippet
+    zygospore
     ))
 
 ;; ------------------ VARIABLES -------------------------------
@@ -90,6 +94,17 @@
 ;; set appearance of a tab that is represented by 4 spaces
 (setq-default tab-width 4)
 (setq tab-stop-list (number-sequence 4 200 4))
+
+;; Package: clean-aindent-mode
+(require 'clean-aindent-mode)
+(add-hook 'prog-mode-hook 'clean-aindent-mode)
+
+;; Package: ws-butler
+(require 'ws-butler)
+(add-hook 'prog-mode-hook 'ws-butler-mode)
+
+;; remove trailing whitespaces before saving
+;(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Compilation
 (global-set-key (kbd "<f5>") (lambda ()

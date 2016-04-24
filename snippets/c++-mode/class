@@ -1,0 +1,33 @@
+# -*- mode: snippet -*-
+# name: netatmo class
+# key: naclass
+# --
+#pragma once
+
+namespace Netatmo { namespace Camera {
+
+/**
+ * @brief
+ */
+class ${1:Name} {
+public:
+    struct Params {
+
+    };
+
+public:
+    /// Ctor
+    ${1:$(yas/substr yas-text "[^: ]*")}(Params params);
+
+    /// Dtor
+    virtual ~${1:$(yas/substr yas-text "[^: ]*")}() = default;
+
+    ///
+    $0
+    
+private:
+    /// parameters
+    Params params;
+};
+
+}}
