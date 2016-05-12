@@ -64,6 +64,8 @@
 ;; this is to use shift + arrow keys to switch between windows
 (windmove-default-keybindings)
 
+(global-auto-revert-mode 1)
+
 ;; Theme
 (require 'setup-theme)
 
