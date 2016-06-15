@@ -110,4 +110,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Package zygospore
 (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows)
 
+;; show column numbers in mode-line
+(setq column-number-mode t)
+
 (provide 'setup-editing)

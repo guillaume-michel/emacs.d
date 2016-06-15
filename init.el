@@ -58,8 +58,12 @@
 (setq scroll-step 1) ;; keyboard scroll one line at a time
 
 ;; smooth scroll
-(require 'smooth-scroll)
-(smooth-scroll-mode t)
+;;(require 'smooth-scroll)
+;;(smooth-scroll-mode t)
+;; nice scrolling
+(setq scroll-margin 0
+      scroll-conservatively 100000
+      scroll-preserve-screen-position 1)
 
 ;; this is to use shift + arrow keys to switch between windows
 (windmove-default-keybindings)

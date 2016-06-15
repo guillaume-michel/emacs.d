@@ -12,6 +12,6 @@
 ;;(load-theme 'base16-brewer-dark t)
 ;;(load-theme 'base16-bright-dark t)
 ;;(load-theme 'base16-tomorrow-dark t)
-;;(load-theme 'orilla-brewer-dark t)
+(load-theme 'orilla-brewer-dark t)
 
 (provide 'setup-theme)
