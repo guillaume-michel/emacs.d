@@ -12,6 +12,7 @@
     helm-projectile
     helm-swoop
     irony
+    magit
     projectile
     smartparens
     smooth-scroll
