@@ -24,9 +24,18 @@
 ;; ------------------ VARIABLES -------------------------------
 (add-to-list 'load-path (expand-file-name "modules" user-emacs-directory))
 
+;; ------------------- MAC Specifics --------------------------
+;; Are we on a mac?
+(setq is-mac (equal system-type 'darwin))
+
 ;; ------------------- INIT PACKAGES --------------------------
 (require 'setup-packages)
 (install-packages orilla-packages)
+
+;; Setup environment variables from the user's shell.
+(when is-mac
+  (require-package 'exec-path-from-shell)
+  (exec-path-from-shell-initialize))
 
 ;; ------------------- Early customization ---------------------
 ;; this variables must be set before load helm-gtags
