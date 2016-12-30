@@ -113,4 +113,14 @@ point reaches the beginning or end of the buffer, stop there."
 ;; show column numbers in mode-line
 (setq column-number-mode t)
 
+;; Add cmake listfile names to the mode list.
+(setq auto-mode-alist
+      (append
+       '(("CMakeLists\\.txt\\'" . cmake-mode))
+       '(("\\.cmake\\'" . cmake-mode))
+       auto-mode-alist))
+
+(autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
+(add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+
 (provide 'setup-editing)

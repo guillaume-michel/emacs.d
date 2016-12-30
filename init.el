@@ -2,6 +2,8 @@
 (defconst orilla-packages
   '(bind-key
     clean-aindent-mode
+    cmake-mode
+    cmake-font-lock
     color-theme
     company
     company-irony
