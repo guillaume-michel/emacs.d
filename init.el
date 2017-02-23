@@ -7,13 +7,15 @@
 (package-initialize)
 
 (defconst orilla-packages
-  '(bind-key
+  '(
+    bind-key
     clean-aindent-mode
     cmake-mode
     cmake-font-lock
     color-theme
     company
     company-irony
+    company-jedi
     diminish
     flycheck
     helm

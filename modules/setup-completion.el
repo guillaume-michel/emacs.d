@@ -44,4 +44,10 @@
   (setq yas-snippet-dirs
         '("~/.emacs.d/snippets")))
 
+(defun orilla/python-mode-hook ()
+  (add-to-list 'company-backends 'company-jedi))
+
+(add-hook 'python-mode-hook 'orilla/python-mode-hook)
+(add-hook 'python-mode-hook 'run-python-internal)
+
 (provide 'setup-completion)
