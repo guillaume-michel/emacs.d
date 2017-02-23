@@ -33,6 +33,9 @@
 ;; ------------------ VARIABLES -------------------------------
 (add-to-list 'load-path (expand-file-name "modules" user-emacs-directory))
 
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file 'noerror)
+
 ;; ------------------- MAC Specifics --------------------------
 ;; Are we on a mac?
 (setq is-mac (equal system-type 'darwin))
