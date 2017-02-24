@@ -183,6 +183,9 @@
 ;;(define-key projectile-mode-map [?\s-g] 'projectile-grep)
 
 
-;; setup slime
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-  (setq inferior-lisp-program "/usr/local/bin/sbcl")
+;; setup slime if present
+(let ((slime-helper (expand-file-name "~/quicklisp/slime-helper.el")))
+  (if (file-exists-p slime-helper)
+      (progn
+        (load slime-helper)
+        (setq inferior-lisp-program "/usr/local/bin/sbcl"))))
