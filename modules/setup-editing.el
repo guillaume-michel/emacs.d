@@ -87,6 +87,7 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'lisp-mode-hook       'hs-minor-mode)
 (add-hook 'perl-mode-hook       'hs-minor-mode)
 (add-hook 'sh-mode-hook         'hs-minor-mode)
+(add-hook 'python-mode-hook     'hs-minor-mode)
 
 ;; disable bell
 (setq visible-bell 1)
