@@ -110,6 +110,43 @@ point reaches the beginning or end of the buffer, stop there."
 
 (add-hook 'python-mode-hook     'flycheck-mode)
 
+(defun display-buffer-window-below-and-shrink (buffer alist)
+  (let ((window (or (get-buffer-window buffer)
+                    (display-buffer-below-selected buffer alist))))
+    (when window
+      (fit-window-to-buffer window 80 00)
+      (shrink-window-if-larger-than-buffer window)
+      window)))
+
+ (add-hook 'flycheck-mode-hook (lambda ()
+                               (add-to-list 'display-buffer-alist
+                                            `(,(rx string-start (eval flycheck-error-list-buffer) string-end)
+                                              (display-buffer-window-below-and-shrink . ((reusable-frames . t)))))))
+
+(defadvice flycheck-error-list-refresh (around shrink-error-list activate)
+  ad-do-it
+  (-when-let (window (flycheck-get-error-list-window t))
+    (with-selected-window window
+      (fit-window-to-buffer window 80 00)
+      (shrink-window-if-larger-than-buffer window))))
+
+(defun flycheck-list-errors-only-when-errors ()
+  (if flycheck-current-errors
+      (flycheck-list-errors)
+    (-when-let (buffer (get-buffer flycheck-error-list-buffer))
+      (dolist (window (get-buffer-window-list buffer))
+        (quit-window nil window)))))
+
+(add-hook 'before-save-hook #'flycheck-list-errors-only-when-errors)
+
+(defun lunaryorn-quit-bottom-side-windows ()
+  "Quit side windows of the current frame."
+  (interactive)
+  (dolist (window (window-at-side-list))
+    (quit-window nil window)))
+
+(global-set-key (kbd "C-c q") #'lunaryorn-quit-bottom-side-windows)
+
 ;; Package zygospore
 (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows)
 
