@@ -25,6 +25,7 @@
     irony
     magit
     projectile
+    rainbow-delimiters
     smartparens
     smooth-scroll
     ws-butler

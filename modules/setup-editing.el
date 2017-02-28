@@ -163,4 +163,7 @@ point reaches the beginning or end of the buffer, stop there."
 (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
 (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
 
+;; rainbow
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
 (provide 'setup-editing)
