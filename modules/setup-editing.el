@@ -89,6 +89,13 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'sh-mode-hook         'hs-minor-mode)
 (add-hook 'python-mode-hook     'hs-minor-mode)
 
+(defun my-toggle-hiding ()
+  "custom toggle folding"
+  (interactive)
+  (hs-toggle-hidding))
+
+(global-set-key (kbd "<f9>") (lambda () (interactive) (hs-toggle-hiding)))
+
 ;; disable bell
 (setq visible-bell 1)
 
