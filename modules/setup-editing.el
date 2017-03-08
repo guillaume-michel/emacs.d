@@ -92,6 +92,9 @@ point reaches the beginning or end of the buffer, stop there."
 ;; disable bell
 (setq visible-bell 1)
 
+;; disable alarm completely
+(setq ring-bell-function 'ignore)
+
 (which-function-mode)
 
 (setq mode-line-format (delete (assoc 'which-func-mode
@@ -123,12 +126,12 @@ point reaches the beginning or end of the buffer, stop there."
                                             `(,(rx string-start (eval flycheck-error-list-buffer) string-end)
                                               (display-buffer-window-below-and-shrink . ((reusable-frames . t)))))))
 
-(defadvice flycheck-error-list-refresh (around shrink-error-list activate)
-  ad-do-it
-  (-when-let (window (flycheck-get-error-list-window t))
-    (with-selected-window window
-      (fit-window-to-buffer window 80 00)
-      (shrink-window-if-larger-than-buffer window))))
+;; (defadvice flycheck-error-list-refresh (around shrink-error-list activate)
+;;   ad-do-it
+;;   (-when-let (window (flycheck-get-error-list-window t))
+;;     (with-selected-window window
+;;       (fit-window-to-buffer window 80 00)
+;;       (shrink-window-if-larger-than-buffer window))))
 
 (defun flycheck-list-errors-only-when-errors ()
   (if flycheck-current-errors
