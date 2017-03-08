@@ -183,6 +183,8 @@
 ;;(define-key projectile-mode-map [?\s-f] 'projectile-find-file)
 ;;(define-key projectile-mode-map [?\s-g] 'projectile-grep)
 
+;; compilation helpers
+(require 'setup-compilation)
 
 ;; setup slime if present
 (let ((slime-helper (expand-file-name "~/quicklisp/slime-helper.el")))
