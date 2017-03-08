@@ -40,8 +40,7 @@
             ;;no errors, make the compilation window go away in a few seconds
             (progn
               (run-at-time
-               "2 sec" nil 'delete-windows-on
-               (get-buffer-create "*compilation*"))
+               "2 sec" nil 'kill-buffer "*compilation*")
               (message "No Compilation Errors!")))))
 
 (add-hook 'c++-mode-hook
