@@ -175,5 +175,9 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; rainbow
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+;;(add-hook 'prog-mode-hook 'rainbow-identifiers-mode)
+(add-hook 'python-mode-hook     'rainbow-identifiers-mode)
+;;(add-hook 'emacs-lisp-mode-hook 'rainbow-identifiers-mode)
+;;(add-hook 'lisp-mode-hook       'rainbow-identifiers-mode)
 
 (provide 'setup-editing)
