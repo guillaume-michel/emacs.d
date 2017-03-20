@@ -26,6 +26,7 @@
     magit
     projectile
     rainbow-delimiters
+    rainbow-identifiers
     smartparens
     smooth-scroll
     ws-butler
@@ -148,9 +149,14 @@
                                (call-interactively 'compile)))
 
 ;; place auto save files in "temp" dir
+(setq temporary-file-directory (concat user-emacs-directory "tmp/"))
+
+(if (not (file-exists-p temporary-file-directory))
+    (make-directory temporary-file-directory t))
+
 (setq
  backup-by-copying t
- backup-directory-alist `(("." . ,"~/.emacs.d/tmp")) ; don't litter my fs tree
+ backup-directory-alist `(("." . ,temporary-file-directory)) ; don't litter my fs tree
  delete-old-versions t
  kept-new-versions 6
  kept-old-versions 2
@@ -158,9 +164,7 @@
 
 ;; save auto save to tmp
 (setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
-
-;; backups to tmp instead of current directory
-(setq backup-directory-alist `((".*" . ,temporary-file-directory)))
+(setq auto-save-list-file-prefix temporary-file-directory)
 
 (message "Deleting old backup files...")
 (let ((week (* 60 60 24 7))
@@ -185,6 +189,10 @@
 
 ;; compilation helpers
 (require 'setup-compilation)
+
+;;; winner mode
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
 
 ;; setup slime if present
 (let ((slime-helper (expand-file-name "~/quicklisp/slime-helper.el")))
