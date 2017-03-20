@@ -149,11 +149,6 @@
                                (call-interactively 'compile)))
 
 ;; place auto save files in "temp" dir
-(setq temporary-file-directory (concat user-emacs-directory "tmp/"))
-
-(if (not (file-exists-p temporary-file-directory))
-    (make-directory temporary-file-directory t))
-
 (setq
  backup-by-copying t
  backup-directory-alist `(("." . ,temporary-file-directory)) ; don't litter my fs tree
