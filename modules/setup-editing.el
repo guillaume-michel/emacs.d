@@ -180,4 +180,8 @@ point reaches the beginning or end of the buffer, stop there."
 ;;(add-hook 'emacs-lisp-mode-hook 'rainbow-identifiers-mode)
 ;;(add-hook 'lisp-mode-hook       'rainbow-identifiers-mode)
 
+;; Caffe prototxt
+(autoload 'caffe-mode "caffe-mode" "Major mode for Caffe" t)
+(add-to-list 'auto-mode-alist '("\\.prototxt\\'" . caffe-mode))
+
 (provide 'setup-editing)
