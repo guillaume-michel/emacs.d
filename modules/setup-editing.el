@@ -88,6 +88,7 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'perl-mode-hook       'hs-minor-mode)
 (add-hook 'sh-mode-hook         'hs-minor-mode)
 (add-hook 'python-mode-hook     'hs-minor-mode)
+(add-hook 'caffe-mode-hook      'hs-minor-mode)
 
 (defun my-toggle-hiding ()
   "custom toggle folding"
@@ -118,7 +119,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;;  :ensure t
 ;;  :init (global-flycheck-mode))
 
-(add-hook 'python-mode-hook     'flycheck-mode)
+;;(add-hook 'python-mode-hook     'flycheck-mode)
 
 (defun display-buffer-window-below-and-shrink (buffer alist)
   (let ((window (or (get-buffer-window buffer)
@@ -183,5 +184,14 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Caffe prototxt
 (autoload 'caffe-mode "caffe-mode" "Major mode for Caffe" t)
 (add-to-list 'auto-mode-alist '("\\.prototxt\\'" . caffe-mode))
+
+;; GLSL
+(autoload 'glsl-mode "glsl-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.geom\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.vsh\\'" . glsl-mode))
+(add-to-list 'auto-mode-alist '("\\.fsh\\'" . glsl-mode))
 
 (provide 'setup-editing)

@@ -18,6 +18,7 @@
     company-jedi
     diminish
     flycheck
+    glsl-mode
     helm
     helm-gtags
     helm-projectile
