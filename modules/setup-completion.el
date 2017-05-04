@@ -44,6 +44,11 @@
   (setq yas-snippet-dirs
         '("~/.emacs.d/snippets")))
 
+(defcustom python-shell-interpreter "python3"
+  "Default Python interpreter for shell."
+  :type 'string
+  :group 'python)
+
 (defun orilla/python-mode-hook ()
   (add-to-list 'company-backends 'company-jedi))
 
