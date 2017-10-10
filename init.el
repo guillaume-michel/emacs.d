@@ -16,16 +16,22 @@
     company
     company-irony
     company-jedi
+;;    demangle-mode
     diminish
     flycheck
+    git-timemachine
     glsl-mode
     helm
     helm-gtags
     helm-projectile
     helm-swoop
     irony
+    jedi
+    llvm-mode
     magit
+    modern-cpp-font-lock
     projectile
+    pip-requirements
     rainbow-delimiters
     rainbow-identifiers
     smartparens

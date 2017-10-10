@@ -194,4 +194,10 @@ point reaches the beginning or end of the buffer, stop there."
 (add-to-list 'auto-mode-alist '("\\.vsh\\'" . glsl-mode))
 (add-to-list 'auto-mode-alist '("\\.fsh\\'" . glsl-mode))
 
+;; modern cpp font lock
+(add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
+
+;; demangle mode
+(add-hook 'llvm-mode-hook #'demangle-mode)
+
 (provide 'setup-editing)

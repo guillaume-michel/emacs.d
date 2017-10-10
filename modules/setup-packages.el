@@ -1,7 +1,11 @@
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
+(add-to-list 'package-archives
+             '("melpa2" . "http://melpa.org/packages/") t)
+
 (package-initialize)
 
 (unless (package-installed-p 'use-package)

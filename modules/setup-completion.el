@@ -49,6 +49,10 @@
   :type 'string
   :group 'python)
 
+;; Standard Jedi.el setting
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
+
 (defun orilla/python-mode-hook ()
   (add-to-list 'company-backends 'company-jedi))
 
