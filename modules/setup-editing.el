@@ -148,7 +148,7 @@ point reaches the beginning or end of the buffer, stop there."
       (dolist (window (get-buffer-window-list buffer))
         (quit-window nil window)))))
 
-(add-hook 'before-save-hook #'flycheck-list-errors-only-when-errors)
+;;(add-hook 'before-save-hook #'flycheck-list-errors-only-when-errors)
 
 (defun lunaryorn-quit-bottom-side-windows ()
   "Quit side windows of the current frame."
@@ -199,5 +199,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; demangle mode
 (add-hook 'llvm-mode-hook #'demangle-mode)
+
+;; Cuda
+(add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
 
 (provide 'setup-editing)
