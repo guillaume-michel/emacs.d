@@ -18,9 +18,11 @@
     company-jedi
 ;;    demangle-mode
     diminish
+    dockerfile-mode
     flycheck
     git-timemachine
     glsl-mode
+    go-mode
     helm
     helm-gtags
     helm-projectile

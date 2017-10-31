@@ -203,4 +203,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Cuda
 (add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
 
+;; Dockerfile
+(require 'dockerfile-mode)
+
 (provide 'setup-editing)
