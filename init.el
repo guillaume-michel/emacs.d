@@ -19,6 +19,7 @@
 ;;    demangle-mode
     diminish
     dockerfile-mode
+    ensime
     flycheck
     git-timemachine
     glsl-mode
@@ -36,6 +37,8 @@
     pip-requirements
     rainbow-delimiters
     rainbow-identifiers
+    scala-mode
+    sbt-mode
     smartparens
     smooth-scroll
     ws-butler

@@ -206,4 +206,15 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Dockerfile
 (require 'dockerfile-mode)
 
+;; Scala
+(use-package ensime
+  :ensure t
+  :pin melpa)
+
+(use-package sbt-mode
+  :pin melpa)
+
+(use-package scala-mode
+  :pin melpa)
+
 (provide 'setup-editing)
