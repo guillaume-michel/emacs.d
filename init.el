@@ -8,6 +8,7 @@
 
 (defconst orilla-packages
   '(
+    ansi-color
     bind-key
     clean-aindent-mode
     cmake-mode
