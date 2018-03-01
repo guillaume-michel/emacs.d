@@ -1,37 +1,24 @@
 ;; Compile Netatmo code
-;; (defun na-compile ()
-
-;;   (interactive)
-;;   (defvar cmd "namake.sh")
-;;   (shell-command cmd)
-;; )
-
-(setq compile-command "namake.sh")
-(setq compile-clean "namake.sh clean")
-(setq compilation-window-height 20)
 
 ;; stop at first error or keep scrolling
-(setq compilation-scroll-output t)
-;;(setq compilation-scroll-output 'first-error)
+;;(setq compilation-scroll-output t)
+(setq compilation-scroll-output 'first-error)
 
-;; my version
 (defun na-recompile ()
   "Run compile and resize the compile window closing the old one if necessary"
   (interactive)
-  (progn
+  (let ((compile-command "namake.sh")
+        (compilation-read-command nil))
     (if (get-buffer "*compilation*") ; If old compile window exists
-        (progn
-          (call-interactively 'recompile))
-      (call-interactively 'compile))
-    (enlarge-window 20)))
+        (call-interactively 'recompile)
+      (call-interactively 'compile))))
 
 (defun compile-clean ()
   "Switches between compile command and clean command"
   (interactive)
-  (let (  (compile-command compile-clean)
-      (compilation-read-command nil))
-    (call-interactively 'compile)
-    (enlarge-window 20)))
+  (let ((compile-command "namake.sh clean")
+        (compilation-read-command nil))
+    (call-interactively 'compile)))
 
 ;; Make the compilation window automatically disappear - from enberg on #emacs
 (setq compilation-finish-functions
