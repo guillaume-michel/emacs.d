@@ -33,7 +33,6 @@
     helm-swoop
     irony
     jedi
-    llvm-mode
     magit
     modern-cpp-font-lock
     projectile
