@@ -89,6 +89,8 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'sh-mode-hook         'hs-minor-mode)
 (add-hook 'python-mode-hook     'hs-minor-mode)
 (add-hook 'caffe-mode-hook      'hs-minor-mode)
+(add-hook 'latex-mode-hook      'hs-minor-mode)
+(add-hook 'LaTeX-mode-hook      'hs-minor-mode)
 
 (defun my-toggle-hiding ()
   "custom toggle folding"
