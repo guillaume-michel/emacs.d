@@ -248,4 +248,28 @@ point reaches the beginning or end of the buffer, stop there."
 
 (global-set-key (kbd "<f8>") 'toggle-window-split)
 
+;; flyspell
+(setq flyspell-issue-message-flag nil)
+(setq flyspell-issue-welcome-flag nil)
+
+(dolist (hook '(text-mode-hook latex-mode-hook))
+      (add-hook hook (lambda () (flyspell-mode 1))))
+(dolist (hook '(change-log-mode-hook log-edit-mode-hook))
+      (add-hook hook (lambda () (flyspell-mode -1))))
+(dolist (hook '(c++-mode-hook python-mode-hook))
+      (add-hook hook (lambda () (flyspell-prog-mode))))
+
+;; easy spell check
+(global-set-key (kbd "<f7>") 'ispell-word)
+(global-set-key (kbd "C-S-<f7>") 'flyspell-mode)
+(global-set-key (kbd "C-M-<f7>") 'flyspell-buffer)
+(global-set-key (kbd "C-<f7>") 'flyspell-check-previous-highlighted-word)
+(defun flyspell-check-next-highlighted-word ()
+  "Custom function to spell check next highlighted word"
+  (interactive)
+  (flyspell-goto-next-error)
+  (ispell-word)
+  )
+(global-set-key (kbd "M-<f7>") 'flyspell-check-next-highlighted-word)
+
 (provide 'setup-editing)
