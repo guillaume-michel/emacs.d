@@ -203,6 +203,7 @@
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 
+(require 'bazel-mode)
 
 (defun slime-style-init-command (port-filename _coding-system extra-args)
   "Return a string to initialize Lisp."
