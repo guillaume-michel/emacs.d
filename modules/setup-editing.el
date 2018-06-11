@@ -256,7 +256,7 @@ point reaches the beginning or end of the buffer, stop there."
       (add-hook hook (lambda () (flyspell-mode 1))))
 (dolist (hook '(change-log-mode-hook log-edit-mode-hook))
       (add-hook hook (lambda () (flyspell-mode -1))))
-(dolist (hook '(c++-mode-hook python-mode-hook))
+(dolist (hook '(python-mode-hook))
       (add-hook hook (lambda () (flyspell-prog-mode))))
 
 ;; easy spell check
