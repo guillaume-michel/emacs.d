@@ -272,4 +272,8 @@ point reaches the beginning or end of the buffer, stop there."
   )
 (global-set-key (kbd "M-<f7>") 'flyspell-check-next-highlighted-word)
 
+(add-hook 'yaml-mode-hook
+          (lambda ()
+            (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+
 (provide 'setup-editing)

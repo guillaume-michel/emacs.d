@@ -6,13 +6,13 @@
 (add-to-list 'package-archives
              '("melpa2" . "http://melpa.org/packages/") t)
 
-(package-initialize)
+;;(package-initialize)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 (eval-when-compile (require 'use-package))
-(require 'diminish)
+;;(require 'diminish)
 (require 'bind-key)
 
 (defun install-packages (packages)

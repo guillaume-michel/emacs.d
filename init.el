@@ -20,7 +20,7 @@
     company-irony
     company-jedi
 ;;    demangle-mode
-    diminish
+;;    diminish
     dockerfile-mode
     ensime
     flycheck
@@ -28,6 +28,7 @@
     glsl-mode
     go-mode
     helm
+    helm-bibtex
     helm-gtags
     helm-projectile
     helm-swoop
@@ -44,6 +45,7 @@
     smartparens
     smooth-scroll
     ws-butler
+    yaml-mode
     yasnippet
     zygospore
     ))
@@ -189,6 +191,8 @@
 (require 'projectile)
 (projectile-global-mode)
 (setq projectile-enable-caching t)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; shortcuts with SUPER but doesn't work on OSX
 ;;(define-key projectile-mode-map [?\s-d] 'projectile-find-dir)

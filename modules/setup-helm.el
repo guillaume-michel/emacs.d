@@ -95,4 +95,6 @@
 (helm-mode 1)
 (helm-autoresize-mode t)
 
+(autoload 'helm-bibtex "helm-bibtex" "" t)
+
 (provide 'setup-helm)
