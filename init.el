@@ -12,6 +12,7 @@
   '(
     ansi-color
     bind-key
+    clang-format
     clean-aindent-mode
     cmake-mode
     cmake-font-lock
@@ -23,7 +24,7 @@
 ;;    diminish
     dockerfile-mode
     ensime
-    flycheck
+;;    flycheck
     git-timemachine
     glsl-mode
     go-mode

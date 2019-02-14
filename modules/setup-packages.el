@@ -6,7 +6,7 @@
 (add-to-list 'package-archives
              '("melpa2" . "http://melpa.org/packages/") t)
 
-;;(package-initialize)
+(package-initialize)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)

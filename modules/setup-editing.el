@@ -131,10 +131,10 @@ point reaches the beginning or end of the buffer, stop there."
       (shrink-window-if-larger-than-buffer window)
       window)))
 
- (add-hook 'flycheck-mode-hook (lambda ()
-                               (add-to-list 'display-buffer-alist
-                                            `(,(rx string-start (eval flycheck-error-list-buffer) string-end)
-                                              (display-buffer-window-below-and-shrink . ((reusable-frames . t)))))))
+ ;; (add-hook 'flycheck-mode-hook (lambda ()
+ ;;                               (add-to-list 'display-buffer-alist
+ ;;                                            `(,(rx string-start (eval flycheck-error-list-buffer) string-end)
+ ;;                                              (display-buffer-window-below-and-shrink . ((reusable-frames . t)))))))
 
 ;; (defadvice flycheck-error-list-refresh (around shrink-error-list activate)
 ;;   ad-do-it
@@ -196,6 +196,9 @@ point reaches the beginning or end of the buffer, stop there."
 (add-to-list 'auto-mode-alist '("\\.vsh\\'" . glsl-mode))
 (add-to-list 'auto-mode-alist '("\\.fsh\\'" . glsl-mode))
 
+;; C++
+(add-to-list 'auto-mode-alist '("\\.ipp\\'" . c++-mode))
+
 ;; modern cpp font lock
 (add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
 
@@ -256,8 +259,8 @@ point reaches the beginning or end of the buffer, stop there."
       (add-hook hook (lambda () (flyspell-mode 1))))
 (dolist (hook '(change-log-mode-hook log-edit-mode-hook))
       (add-hook hook (lambda () (flyspell-mode -1))))
-(dolist (hook '(python-mode-hook))
-      (add-hook hook (lambda () (flyspell-prog-mode))))
+;; (dolist (hook '(python-mode-hook))
+;;       (add-hook hook (lambda () (flyspell-prog-mode))))
 
 ;; easy spell check
 (global-set-key (kbd "<f7>") 'ispell-word)

@@ -67,4 +67,38 @@
 ;;             0                           ; no additional indent
 ;;           ad-do-it)))                   ; default behavior
 
+;; clang-format
+(require 'clang-format)
+;; (define-key c++-mode-map (kbd "<C-M-tab>") 'clang-format-buffer)
+;; (fset 'c-indent-region 'clang-format-region)
+
+;; (defun clang-format-buffer-smart ()
+;;   "Reformat buffer if .clang-format exists in the projectile root."
+;;   (interactive)
+;;   (when (f-exists? (expand-file-name ".clang-format" (projectile-project-root)))
+;;     (clang-format-buffer)))
+
+;; (defun clang-format-region-smart (start end)
+;;   "Reformat region if .clang-format exists in the projectile root."
+;;   (interactive)
+;;   (when (f-exists? (expand-file-name ".clang-format" (projectile-project-root)))
+;;     (clang-format-region start end)))
+
+;; (add-hook
+;;  'c++-mode-hook
+;;  (lambda ()
+;;    (local-set-key (kbd "C-M-\\") #'clang-format-region)
+;;    (local-set-key (kbd "C-i") #'clang-format-buffer)))
+
+;; (add-hook
+;;  'c++-mode-hook
+;;  (lambda ()
+;;    (local-set-key (kbd "<tab>") #'clang-format-region)
+;;    (local-set-key (kbd "C-i") #'clang-format-buffer)))
+
+;; (add-hook
+;;  'c++-mode-hook
+;;  (lambda ()
+;;    (local-set-key (kbd "C-i") #'clang-format-buffer)))
+
 (provide 'setup-cpp)
