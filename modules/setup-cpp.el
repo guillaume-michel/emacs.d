@@ -8,7 +8,10 @@
                 )))
 
 ;; set style to "guillaume"
-(setq c-default-style "guillaume")
+;;(setq c-default-style "guillaume")
+
+(add-hook 'c-mode-common-hook 'google-set-c-style)
+(add-hook 'c-mode-common-hook 'google-make-newline-indent)
 
 ;; This hack fixes indentation for C++11's "enum class" and other minor issues with template member functions in Emacs.
 ;; http://stackoverflow.com/questions/6497374/emacs-cc-mode-indentation-problem-with-c0x-enum-class/6550361#6550361
@@ -51,7 +54,7 @@
   (add-to-list 'c-offsets-alist '(topmost-intro-cont . custom-topmost-intro-cont))
   (add-to-list 'c-offsets-alist '(statement-cont . custom-statement-cont)))
 
-(add-hook 'c++-mode-hook 'fix-cpp11-indentation)
+;;(add-hook 'c++-mode-hook 'fix-cpp11-indentation)
 
 ;; Fix indentation issue for lambda
 ;; (defadvice c-lineup-arglist (around my activate)
@@ -70,7 +73,7 @@
 ;; clang-format
 (require 'clang-format)
 ;; (define-key c++-mode-map (kbd "<C-M-tab>") 'clang-format-buffer)
-;; (fset 'c-indent-region 'clang-format-region)
+(fset 'c-indent-region 'clang-format-region)
 
 ;; (defun clang-format-buffer-smart ()
 ;;   "Reformat buffer if .clang-format exists in the projectile root."

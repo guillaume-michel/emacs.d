@@ -28,6 +28,7 @@
     git-timemachine
     glsl-mode
     go-mode
+    google-c-style
     helm
     helm-bibtex
     helm-gtags
@@ -209,6 +210,9 @@
   (winner-mode 1))
 
 (require 'bazel-mode)
+
+;; magit
+(global-set-key (kbd "C-x g") 'magit-status)
 
 (defun slime-style-init-command (port-filename _coding-system extra-args)
   "Return a string to initialize Lisp."
