@@ -279,4 +279,7 @@ point reaches the beginning or end of the buffer, stop there."
           (lambda ()
             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
+;; git-timemachine
+(use-package git-timemachine :defer t)
+
 (provide 'setup-editing)
