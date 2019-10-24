@@ -91,6 +91,7 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'caffe-mode-hook      'hs-minor-mode)
 (add-hook 'latex-mode-hook      'hs-minor-mode)
 (add-hook 'LaTeX-mode-hook      'hs-minor-mode)
+(add-hook 'lua-mode-hook        'hs-minor-mode)
 
 (defun my-toggle-hiding ()
   "custom toggle folding"
@@ -122,6 +123,7 @@ point reaches the beginning or end of the buffer, stop there."
 ;;  :init (global-flycheck-mode))
 
 ;;(add-hook 'python-mode-hook     'flycheck-mode)
+(add-hook 'sh-mode-hook 'flycheck-mode)
 
 (defun display-buffer-window-below-and-shrink (buffer alist)
   (let ((window (or (get-buffer-window buffer)
@@ -275,11 +277,27 @@ point reaches the beginning or end of the buffer, stop there."
   )
 (global-set-key (kbd "M-<f7>") 'flyspell-check-next-highlighted-word)
 
+(if (file-exists-p "/usr/bin/hunspell")
+    (progn
+      (setq ispell-program-name "hunspell")
+      (eval-after-load "ispell"
+        '(progn (defun ispell-get-coding-system () 'utf-8)))))
+
+
 (add-hook 'yaml-mode-hook
           (lambda ()
             (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
 
 ;; git-timemachine
 (use-package git-timemachine :defer t)
+
+(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
+(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+(add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
+
+(use-package ox-reveal
+  :ensure ox-reveal)
+(setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js@3.8.0")
+(setq org-reveal-mathjax t)
 
 (provide 'setup-editing)

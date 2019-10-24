@@ -24,7 +24,8 @@
 ;;    diminish
     dockerfile-mode
     ensime
-;;    flycheck
+    flycheck
+    flyspell
     git-timemachine
     glsl-mode
     go-mode
@@ -36,8 +37,10 @@
     helm-swoop
     irony
     jedi
+    lua-mode
     magit
     modern-cpp-font-lock
+    ox-reveal
     projectile
     pip-requirements
     rainbow-delimiters
@@ -243,7 +246,7 @@
   (if (file-exists-p slime-helper)
       (progn
         (load slime-helper)
-        (setq inferior-lisp-program "/usr/local/bin/sbcl"))))
+        (setq inferior-lisp-program "/usr/local/bin/sbcl --dynamic-space-size 15000"))))
 
 (require 'cl)
 
