@@ -41,6 +41,7 @@
     magit
     modern-cpp-font-lock
     ox-reveal
+    prettier-js
     projectile
     pip-requirements
     rainbow-delimiters
