@@ -48,15 +48,14 @@ point reaches the beginning or end of the buffer, stop there."
 
 (global-set-key (kbd "C-a") 'prelude-move-beginning-of-line)
 
-;; revert buffers automatically when underlying files are changed externally
-(global-auto-revert-mode t)
-
 ;; disable annoying blink-matching-paren
 (setq blink-matching-paren nil)
 
 ;; show matching paren
-(setq show-paren-delay 0)
-(show-paren-mode 1)
+(use-package paren
+  :config
+  (setq show-paren-delay 0)
+  (show-paren-mode 1))
 
 ;; Package: smartparens
 (require 'smartparens-config)
@@ -159,7 +158,12 @@ point reaches the beginning or end of the buffer, stop there."
 (global-set-key (kbd "C-c q") #'lunaryorn-quit-bottom-side-windows)
 
 ;; Package zygospore
-(global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows)
+(use-package zygospore
+  :config
+  (general-define-key
+   "C-x 1" '(zygospore-toggle-delete-other-windows :which-key "toggle single window"))
+  (my-leader-def
+   "ts" '(zygospore-toggle-delete-other-windows :which-key "single window")))
 
 ;; Add cmake listfile names to the mode list.
 (setq auto-mode-alist

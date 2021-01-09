@@ -49,10 +49,8 @@
     rainbow-identifiers
     sbt-mode
     smartparens
-    ws-butler
     yaml-mode
     yasnippet
-    zygospore
     ))
 
 ;; ------------------ VARIABLES -------------------------------
@@ -188,6 +186,23 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 ;; ----------------- KEY BINDINGS --------------------
+;; general is used for easy keybinding configuration
+;; that integrates well with which-key
+(use-package general
+  :config
+  (general-create-definer my-leader-def
+    :prefix "s-/")
+
+  ;; Global keybindings
+  (my-leader-def
+   "t"  '(:ignore t :which-key "toggles")
+   "tw" 'whitespace-mode)
+
+  ;; (general-define-key
+  ;;  "<escape>" 'keyboard-escape-quit)
+  )
+
+;; ------------------ UI Configuration ----------------
 ;; which-key is a useful UI panel that appears
 ;; when you start pressing any key binding in Emacs
 ;; to offer you all possible completions for the prefix
@@ -195,23 +210,22 @@
   :init (which-key-mode)
   :diminish which-key-mode
   :config
-  (setq which-key-idle-delay 1))
+  (setq which-key-idle-delay 0.3))
 
-;; general is used for easy keybinding configuration
-;; that integrates well with which-key
-(use-package general
-  ;; :config
-  ;; (general-create-definer my-leader-def
-  ;;   :prefix "s-/")
+(use-package all-the-icons
+  :if (display-graphic-p)
+  :commands all-the-icons-install-fonts
+  :init
+  (unless (find-font (font-spec :name "all-the-icons"))
+    (all-the-icons-install-fonts t)))
 
-  ;; ;; Global keybindings examples
-  ;; (my-leader-def
-  ;;   "a" '(org-agenda :which-key "Agenda")
-  ;;   "c" '(org-capture :which-key "Capture"))
+(use-package all-the-icons-dired
+  :if (display-graphic-p)
+  :hook (dired-mode . all-the-icons-dired-mode))
 
-  ;; (general-define-key
-  ;;  "<escape>" 'keyboard-escape-quit)
-  )
+(use-package doom-modeline
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 15)))
 
 ;; Theme
 (require 'setup-theme)
@@ -252,9 +266,10 @@
 (require 'clean-aindent-mode)
 (add-hook 'prog-mode-hook 'clean-aindent-mode)
 
-;; Package: ws-butler
-(require 'ws-butler)
-(add-hook 'prog-mode-hook 'ws-butler-mode)
+;; Automatically clean whitespace created during current editing
+(use-package ws-butler
+  :hook ((text-mode . ws-butler-mode)
+         (prog-mode . ws-butler-mode)))
 
 ;; remove trailing whitespaces before saving
 ;(add-hook 'before-save-hook 'delete-trailing-whitespace)
