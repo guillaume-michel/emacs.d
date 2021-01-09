@@ -1,10 +1,3 @@
-;;(require 'color-theme)
-;;(color-theme-initialize)
-
-;;(color-theme-jsc-dark)
-;;(color-theme-arjen)
-;;(color-theme-billw)
-
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 ;;(load-theme 'zenburn t)
 ;;(load-theme 'tomorrow-night-paradise t)

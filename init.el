@@ -1,12 +1,17 @@
-;; ------------ PACKAGES ----------------------
+;; The default is 800 kilobytes.  Measured in bytes.
+;; set high threshold to boost startup
+(setq gc-cons-threshold (* 500 1000 1000))
 
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
-(require 'cl)
+;; Profile emacs startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "*** Emacs loaded in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)
+            ;; reduce gc threshold to avoid freezes during GC
+            (setq gc-cons-threshold (* 50 1000 1000))))
 
 (defconst orilla-packages
   '(
@@ -16,19 +21,14 @@
     clean-aindent-mode
     cmake-mode
     cmake-font-lock
-    color-theme
     company
     company-irony
     company-jedi
-;;    demangle-mode
-;;    diminish
     dockerfile-mode
-    ensime
     flycheck
     flyspell
     git-timemachine
     glsl-mode
-    go-mode
     google-c-style
     helm
     helm-bibtex
@@ -46,10 +46,8 @@
     pip-requirements
     rainbow-delimiters
     rainbow-identifiers
-    scala-mode
     sbt-mode
     smartparens
-    smooth-scroll
     ws-butler
     yaml-mode
     yasnippet
@@ -85,10 +83,6 @@
 ;; Always load newest byte code
 (setq load-prefer-newer t)
 
-;; reduce the frequency of garbage collection by making it happen on
-;; each 100MB of allocated data (the default is on every 0.76MB)
-(setq gc-cons-threshold (* 10 1024 1024))
-
 ;; warn when opening files bigger than 100MB
 (setq large-file-warning-threshold 100000000)
 
@@ -105,9 +99,6 @@
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 (setq scroll-step 1) ;; keyboard scroll one line at a time
 
-;; smooth scroll
-;;(require 'smooth-scroll)
-;;(smooth-scroll-mode t)
 ;; nice scrolling
 (setq scroll-margin 0
       scroll-conservatively 100000
@@ -117,6 +108,31 @@
 (windmove-default-keybindings)
 
 (global-auto-revert-mode 1)
+
+;; show column number in modeline
+(column-number-mode)
+
+;; ;; show line number on the left
+;; (global-display-line-numbers-mode t)
+
+;; ;; Disable line numbers for some modes
+;; (dolist (mode '(org-mode-hook
+;;                 term-mode-hook
+;;                 shell-mode-hook
+;;                 treemacs-mode-hook
+;;                 eshell-mode-hook))
+;;   (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
+;; Enable line numbers for some modes
+(dolist (mode '(text-mode-hook
+                prog-mode-hook
+                conf-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 1))))
+
+;; Override some modes which derive from the above
+(dolist (mode '(org-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
 
 ;; Theme
 (require 'setup-theme)
@@ -197,7 +213,7 @@
 (require 'projectile)
 (projectile-global-mode)
 (setq projectile-enable-caching t)
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "H-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; shortcuts with SUPER but doesn't work on OSX
@@ -248,29 +264,3 @@
       (progn
         (load slime-helper)
         (setq inferior-lisp-program "/usr/local/bin/sbcl --dynamic-space-size 15000"))))
-
-(require 'cl)
-
-(defun slime-style-init-command (port-filename _coding-system extra-args)
-  "Return a string to initialize Lisp."
-  (let ((loader (if (file-name-absolute-p slime-backend)
-                    slime-backend
-                  (concat slime-path slime-backend))))
-    ;; Return a single form to avoid problems with buffered input.
-    (format "%S\n\n"
-            `(progn
-               (load ,(slime-to-lisp-filename (expand-file-name loader))
-                     :verbose t)
-               (funcall (read-from-string "swank-loader:init"))
-               (funcall (read-from-string "swank:start-server")
-                        ,(slime-to-lisp-filename port-filename)
-            ,@extra-args)))))
-
-(defun slime-style (&optional style)
-  (interactive
-   (list (intern-soft (read-from-minibuffer "Style: " "nil"))))
-  (lexical-let ((style style))
-    (slime-start
-     :init (lambda (x y)
-         (slime-style-init-command
-          x y `(:style ,style :dont-close t))))))

@@ -76,10 +76,6 @@ point reaches the beginning or end of the buffer, stop there."
 (set-face-background 'hl-line "#202020")
 (set-face-foreground 'highlight nil)
 
-;; line numbers
-(global-linum-mode t)
-(setq linum-format "%4d \u2502 ")
-
 ;; folding
 (add-hook 'c-mode-common-hook   'hs-minor-mode)
 (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
@@ -165,9 +161,6 @@ point reaches the beginning or end of the buffer, stop there."
 ;; Package zygospore
 (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows)
 
-;; show column numbers in mode-line
-(setq column-number-mode t)
-
 ;; Add cmake listfile names to the mode list.
 (setq auto-mode-alist
       (append
@@ -212,17 +205,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; Dockerfile
 (require 'dockerfile-mode)
-
-;; Scala
-(use-package ensime
-  :ensure t
-  :pin melpa)
-
-(use-package sbt-mode
-  :pin melpa)
-
-(use-package scala-mode
-  :pin melpa)
 
 ;; Vertical split shows more of each line, horizontal split shows more lines.
 ;; This code toggles between them
