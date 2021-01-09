@@ -131,16 +131,8 @@
 ;; show column number in modeline
 (column-number-mode)
 
-;; ;; show line number on the left
-;; (global-display-line-numbers-mode t)
-
-;; ;; Disable line numbers for some modes
-;; (dolist (mode '(org-mode-hook
-;;                 term-mode-hook
-;;                 shell-mode-hook
-;;                 treemacs-mode-hook
-;;                 eshell-mode-hook))
-;;   (add-hook mode (lambda () (display-line-numbers-mode 0))))
+;; minimum line number column width
+(setq-default display-line-numbers-width 4)
 
 ;; Enable line numbers for some modes
 (dolist (mode '(text-mode-hook
