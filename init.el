@@ -61,10 +61,6 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
-;; ------------------- MAC Specifics --------------------------
-;; Are we on a mac?
-(setq is-mac (equal system-type 'darwin))
-
 ;; ------------------- INIT PACKAGES --------------------------
 (require 'package)
 
@@ -84,12 +80,16 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+;; TODO remove when use-package is used everywhere
 (require 'setup-packages)
 (install-packages orilla-packages)
 
-;; Setup environment variables from the user's shell.
-(when is-mac
-  (require-package 'exec-path-from-shell)
+;; ------------ MAC SPECIFIC WORKAROUND ------------------------
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns x))
+  :config
+  (setq exec-path-from-shell-variables '("PATH" "PYTHONPATH"))
   (exec-path-from-shell-initialize))
 
 ;; ------------------- Early customization ---------------------
