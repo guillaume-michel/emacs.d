@@ -1,8 +1,9 @@
+;; ---------------- STARTUP SPEEDUP --------------------------------------------
 ;; The default is 800 kilobytes.  Measured in bytes.
 ;; set high threshold to boost startup
 (setq gc-cons-threshold (* 500 1000 1000))
 
-;; Profile emacs startup
+;; Profile emacs startup & setup normal GC threshold
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "*** Emacs loaded in %s with %d garbage collections."
@@ -65,6 +66,24 @@
 (setq is-mac (equal system-type 'darwin))
 
 ;; ------------------- INIT PACKAGES --------------------------
+(require 'package)
+
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ("org" . "https://orgmode.org/elpa/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
+
+(package-initialize)
+
+(unless package-archive-contents
+  (package-refresh-contents))
+
+ ;; Initialize use-package on non-Linux platforms
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+
+(require 'use-package)
+(setq use-package-always-ensure t)
+
 (require 'setup-packages)
 (install-packages orilla-packages)
 
