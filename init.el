@@ -230,6 +230,10 @@
 ;; Theme
 (require 'setup-theme)
 
+;; Stateful keymaps with Hydra
+(use-package hydra
+  :defer 1)
+
 (require 'setup-helm)
 (require 'setup-helm-gtags)
 
