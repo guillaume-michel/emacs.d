@@ -107,14 +107,21 @@
 (setq load-prefer-newer t)
 
 ;; warn when opening files bigger than 100MB
-(setq large-file-warning-threshold 100000000)
+(setq large-file-warning-threshold (* 100 1024 1024))
 
 (setq inhibit-startup-message t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; disable menu bar
-(menu-bar-mode -1)
+;; minimal view setup
+(scroll-bar-mode -1)        ; Disable visible scrollbar
+(tool-bar-mode -1)          ; Disable the toolbar
+(tooltip-mode -1)           ; Disable tooltips
+(set-fringe-mode 10)        ; Give some breathing room
+(menu-bar-mode -1)            ; Disable the menu bar
+
+;; maximize frame
+(toggle-frame-maximized)
 
 ;; scroll one line at a time (less "jumpy" than defaults)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -179,9 +186,9 @@
 ;; use space to indent by default
 (setq-default indent-tabs-mode nil)
 
-;; set appearance of a tab that is represented by 4 spaces
-(setq-default tab-width 4)
-(setq tab-stop-list (number-sequence 4 200 4))
+;; set appearance of a tab that is represented by 2 spaces
+(setq-default tab-width 2)
+(setq tab-stop-list (number-sequence 2 200 2))
 
 ;; Package: clean-aindent-mode
 (require 'clean-aindent-mode)
