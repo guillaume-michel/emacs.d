@@ -187,6 +187,32 @@
 (dolist (mode '(org-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+;; ----------------- KEY BINDINGS --------------------
+;; which-key is a useful UI panel that appears
+;; when you start pressing any key binding in Emacs
+;; to offer you all possible completions for the prefix
+(use-package which-key
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 1))
+
+;; general is used for easy keybinding configuration
+;; that integrates well with which-key
+(use-package general
+  ;; :config
+  ;; (general-create-definer my-leader-def
+  ;;   :prefix "s-/")
+
+  ;; ;; Global keybindings examples
+  ;; (my-leader-def
+  ;;   "a" '(org-agenda :which-key "Agenda")
+  ;;   "c" '(org-capture :which-key "Capture"))
+
+  ;; (general-define-key
+  ;;  "<escape>" 'keyboard-escape-quit)
+  )
+
 ;; Theme
 (require 'setup-theme)
 
