@@ -31,11 +31,11 @@
     git-timemachine
     glsl-mode
     google-c-style
-    helm
-    helm-bibtex
-    helm-gtags
-    helm-projectile
-    helm-swoop
+    ;; helm
+    ;; helm-bibtex
+    ;; helm-gtags
+    ;; helm-projectile
+    ;; helm-swoop
     irony
     jedi
     lua-mode
@@ -43,7 +43,7 @@
     modern-cpp-font-lock
     ox-reveal
     prettier-js
-    projectile
+    ;; projectile
     pip-requirements
     rainbow-delimiters
     rainbow-identifiers
@@ -128,7 +128,7 @@
 ;; ------------------- Early customization ---------------------
 ;; this variables must be set before load helm-gtags
 ;; you can change to any prefix key of your choice
-(setq helm-gtags-prefix-key "\C-cg")
+;;(setq helm-gtags-prefix-key "\C-cg")
 
 ;; ------------------- SANE SETTINGS ---------------------------
 
@@ -233,16 +233,81 @@
 (use-package hydra
   :defer 1)
 
-(require 'setup-helm)
-(require 'setup-helm-gtags)
+;; (require 'setup-helm)
+;; (require 'setup-helm-gtags)
 
 ;; setup general editing
 (require 'setup-editing)
 
-(require 'helm-projectile)
-(helm-projectile-on)
-(setq projectile-completion-system 'helm)
-(setq projectile-indexing-method 'alien)
+;; (require 'helm-projectile)
+;; (helm-projectile-on)
+;; (setq projectile-completion-system 'helm)
+;; (setq projectile-indexing-method 'alien)
+
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)
+         ("C-l" . ivy-alt-done)
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line)
+         :map ivy-switch-buffer-map
+         ("C-k" . ivy-previous-line)
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
+  :config
+  (ivy-mode 1)
+  (setq ivy-re-builders-alist
+        '((t . ivy--regex-ignore-order)))
+  )
+
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+
+(use-package counsel
+  :bind (("C-M-j" . 'counsel-switch-buffer)
+         :map minibuffer-local-map
+         ("C-r" . 'counsel-minibuffer-history))
+  :custom
+  (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
+  :config
+  (counsel-mode 1))
+
+(use-package ivy-prescient
+  :after counsel
+  :custom
+  (ivy-prescient-enable-filtering nil)
+  :config
+  ;; Uncomment the following line to have sorting remembered across sessions!
+  ;(prescient-persist-mode 1)
+  (ivy-prescient-mode 1))
+
+(use-package ivy-hydra
+  :defer t
+  :after hydra)
+
+(use-package flx  ;; Improves sorting for fuzzy-matched results
+  :after ivy
+  :defer t
+  :init
+  (setq ivy-flx-limit 10000))
+
+(use-package wgrep)
+
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
 
 ;; setup c++ indentation and style, fix C++11 issues
 (require 'setup-cpp)
@@ -284,11 +349,26 @@
                                (call-interactively 'compile)))
 
 ;; Package: projejctile
-(require 'projectile)
-(projectile-global-mode)
-(setq projectile-enable-caching t)
-(define-key projectile-mode-map (kbd "H-p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :custom ((projectile-completion-system 'ivy))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  ;; NOTE: Set this to the folder where you keep your Git repos!
+  (when (file-directory-p "~/work")
+    (setq projectile-project-search-path '("~/work")))
+  (setq projectile-switch-project-action #'projectile-dired))
+
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
+
+;; (require 'projectile)
+;; (projectile-global-mode)
+;; (setq projectile-enable-caching t)
+;; (define-key projectile-mode-map (kbd "H-p") 'projectile-command-map)
+;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 ;; shortcuts with SUPER but doesn't work on OSX
 ;;(define-key projectile-mode-map [?\s-d] 'projectile-find-dir)
