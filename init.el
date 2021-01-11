@@ -16,7 +16,6 @@
 
 (defconst orilla-packages
   '(
-    ansi-color
     bind-key
     clang-format
     cmake-mode
@@ -186,6 +185,9 @@
 (set-face-attribute 'default nil :height 90)
 (set-face-attribute 'fixed-pitch nil :height 90)
 (set-face-attribute 'variable-pitch nil :height 90 :weight 'regular)
+
+;; for compilation buffer
+(use-package ansi-color)
 
 ;; which-key is a useful UI panel that appears
 ;; when you start pressing any key binding in Emacs
