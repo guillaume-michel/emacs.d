@@ -327,6 +327,12 @@
 (general-define-key
  "C-x g" 'magit-status)
 
+;; Google-this
+(use-package google-this
+  :ensure t
+  :bind
+  (("C-c <f1>" . google-this-cpp-reference)))
+
 (defun slime-style-init-command (port-filename _coding-system extra-args)
   "Return a string to initialize Lisp."
   (let ((loader (if (file-name-absolute-p slime-backend)
