@@ -14,42 +14,11 @@
             ;; reduce gc threshold to avoid freezes during GC
             (setq gc-cons-threshold (* 50 1000 1000))))
 
-(defconst orilla-packages
-  '(
-    bind-key
-    git-timemachine
-    pip-requirements
-    sbt-mode
-    ))
-
 ;; ------------------ VARIABLES -------------------------------
 (add-to-list 'load-path (expand-file-name "modules" user-emacs-directory))
 
 ;; ------------------- INIT PACKAGES --------------------------
-(require 'package)
-
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
-
-(package-initialize)
-
-(unless package-archive-contents
-  (package-refresh-contents))
-
- ;; Initialize use-package if needed
-(unless (package-installed-p 'use-package)
-  (package-install 'use-package))
-
-(require 'use-package)
-(setq use-package-always-ensure t)
-
-;; Uncomment this to get a reading on packages that get loaded at startup
-;; (setq use-package-verbose t)
-
-;; TODO remove when use-package is used everywhere
 (require 'setup-packages)
-(install-packages orilla-packages)
 
 ;; ---------------- Keep .emacs.d clean ------------------------
 ;; NOTE: If you want to move everything out of the ~/.emacs.d folder
