@@ -19,7 +19,6 @@
     ansi-color
     bind-key
     clang-format
-    clean-aindent-mode
     cmake-mode
     cmake-font-lock
     company
@@ -338,8 +337,9 @@
 (setq tab-stop-list (number-sequence 2 200 2))
 
 ;; Package: clean-aindent-mode
-(require 'clean-aindent-mode)
-(add-hook 'prog-mode-hook 'clean-aindent-mode)
+(use-package clean-aindent-mode
+  :diminish
+  :hook (prog-mode . clean-aindent-mode))
 
 ;; Automatically clean whitespace created during current editing
 (use-package ws-butler
