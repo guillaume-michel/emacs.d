@@ -23,7 +23,6 @@
     cmake-font-lock
     company
     company-irony
-    company-jedi
     dockerfile-mode
     flycheck
     flyspell
@@ -36,7 +35,6 @@
     ;; helm-projectile
     ;; helm-swoop
     irony
-    jedi
     lua-mode
     modern-cpp-font-lock
     ox-reveal
