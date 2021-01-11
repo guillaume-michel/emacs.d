@@ -111,7 +111,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; CMake support
 (use-package cmake-mode
-  :diminish
   :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
 
 (use-package cmake-font-lock
