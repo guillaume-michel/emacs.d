@@ -44,13 +44,6 @@
   (company-minimum-prefix-length 1)
   (company-idle-delay 0.0))
 
-(use-package company-lsp
-  :after company
-  :ensure t
-  :config
-  (require 'company-lsp)
-  (push 'company-lsp company-backends))
-
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
