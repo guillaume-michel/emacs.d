@@ -202,6 +202,11 @@
   )
 
 ;; ------------------ UI Configuration ----------------
+;; set font size
+(set-face-attribute 'default nil :height 90)
+(set-face-attribute 'fixed-pitch nil :height 90)
+(set-face-attribute 'variable-pitch nil :height 90 :weight 'regular)
+
 ;; which-key is a useful UI panel that appears
 ;; when you start pressing any key binding in Emacs
 ;; to offer you all possible completions for the prefix
