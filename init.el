@@ -26,11 +26,6 @@
     git-timemachine
     glsl-mode
     google-c-style
-    ;; helm
-    ;; helm-bibtex
-    ;; helm-gtags
-    ;; helm-projectile
-    ;; helm-swoop
     lua-mode
     modern-cpp-font-lock
     ox-reveal
@@ -115,11 +110,6 @@
   :config
   (setq exec-path-from-shell-variables '("PATH" "PYTHONPATH"))
   (exec-path-from-shell-initialize))
-
-;; ------------------- Early customization ---------------------
-;; this variables must be set before load helm-gtags
-;; you can change to any prefix key of your choice
-;;(setq helm-gtags-prefix-key "\C-cg")
 
 ;; ------------------- SANE SETTINGS ---------------------------
 
@@ -232,16 +222,8 @@
 (use-package hydra
   :defer 1)
 
-;; (require 'setup-helm)
-;; (require 'setup-helm-gtags)
-
 ;; setup general editing
 (require 'setup-editing)
-
-;; (require 'helm-projectile)
-;; (helm-projectile-on)
-;; (setq projectile-completion-system 'helm)
-;; (setq projectile-indexing-method 'alien)
 
 (use-package ivy
   :diminish
