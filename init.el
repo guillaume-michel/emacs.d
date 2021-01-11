@@ -30,7 +30,6 @@
     modern-cpp-font-lock
     ox-reveal
     prettier-js
-    ;; projectile
     pip-requirements
     rainbow-delimiters
     rainbow-identifiers
@@ -332,7 +331,7 @@
                                (setq-local compilation-read-command nil)
                                (call-interactively 'compile)))
 
-;; Package: projejctile
+;; Package: projectile
 (use-package projectile
   :diminish
   :config (projectile-mode)
@@ -347,18 +346,6 @@
 
 (use-package counsel-projectile
   :config (counsel-projectile-mode))
-
-;; (require 'projectile)
-;; (projectile-global-mode)
-;; (setq projectile-enable-caching t)
-;; (define-key projectile-mode-map (kbd "H-p") 'projectile-command-map)
-;; (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
-;; shortcuts with SUPER but doesn't work on OSX
-;;(define-key projectile-mode-map [?\s-d] 'projectile-find-dir)
-;;(define-key projectile-mode-map [?\s-p] 'projectile-switch-project)
-;;(define-key projectile-mode-map [?\s-f] 'projectile-find-file)
-;;(define-key projectile-mode-map [?\s-g] 'projectile-grep)
 
 ;; compilation helpers
 (require 'setup-compilation)
