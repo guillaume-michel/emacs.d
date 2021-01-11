@@ -21,7 +21,6 @@
     cmake-mode
     cmake-font-lock
     dockerfile-mode
-    flyspell
     git-timemachine
     glsl-mode
     google-c-style
