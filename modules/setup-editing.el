@@ -84,7 +84,6 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'perl-mode-hook       'hs-minor-mode)
 (add-hook 'sh-mode-hook         'hs-minor-mode)
 (add-hook 'python-mode-hook     'hs-minor-mode)
-(add-hook 'caffe-mode-hook      'hs-minor-mode)
 (add-hook 'latex-mode-hook      'hs-minor-mode)
 (add-hook 'LaTeX-mode-hook      'hs-minor-mode)
 (add-hook 'lua-mode-hook        'hs-minor-mode)
@@ -121,10 +120,6 @@ point reaches the beginning or end of the buffer, stop there."
 ;; rainbow
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
-
-;; Caffe prototxt
-(autoload 'caffe-mode "caffe-mode" "Major mode for Caffe" t)
-(add-to-list 'auto-mode-alist '("\\.prototxt\\'" . caffe-mode))
 
 ;; GLSL
 (use-package glsl-mode
