@@ -176,6 +176,7 @@ point reaches the beginning or end of the buffer, stop there."
 (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js@3.8.0")
 (setq org-reveal-mathjax t)
 
-(add-hook 'js-mode-hook 'prettier-js-mode)
+(use-package prettier-js
+  :hook (js-mode . prettier-js-mode))
 
 (provide 'setup-editing)

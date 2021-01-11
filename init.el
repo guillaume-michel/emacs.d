@@ -19,7 +19,6 @@
     bind-key
     git-timemachine
     ox-reveal
-    prettier-js
     pip-requirements
     sbt-mode
     ))
