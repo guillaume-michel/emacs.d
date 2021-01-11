@@ -310,7 +310,8 @@
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 
-(require 'bazel-mode)
+;; Bazel
+(use-package bazel-mode)
 
 ;; magit
 (use-package magit)
