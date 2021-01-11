@@ -66,11 +66,4 @@
   (setq yas-snippet-dirs
         '("~/.emacs.d/snippets")))
 
-(defcustom python-shell-interpreter "python3"
-  "Default Python interpreter for shell."
-  :type 'string
-  :group 'python)
-
-(add-hook 'python-mode-hook 'run-python-internal)
-
 (provide 'setup-completion)

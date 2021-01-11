@@ -264,6 +264,9 @@
 ;; setup c++ language support
 (require 'setup-cpp)
 
+;; setup python language support
+(require 'setup-python)
+
 (global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
 
 ;; activate whitespace-mode to view all whitespace characters
