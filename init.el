@@ -258,6 +258,9 @@
 ;; setup code completion
 (require 'setup-completion)
 
+;; setup debuggers
+(require 'setup-debugger)
+
 ;; setup c++ language support
 (require 'setup-cpp)
 
