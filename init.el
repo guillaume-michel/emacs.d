@@ -39,7 +39,6 @@
     irony
     jedi
     lua-mode
-    magit
     modern-cpp-font-lock
     ox-reveal
     prettier-js
@@ -394,7 +393,9 @@
 (require 'bazel-mode)
 
 ;; magit
-(global-set-key (kbd "C-x g") 'magit-status)
+(use-package magit)
+(general-define-key
+ "C-x g" 'magit-status)
 
 (defun slime-style-init-command (port-filename _coding-system extra-args)
   "Return a string to initialize Lisp."
