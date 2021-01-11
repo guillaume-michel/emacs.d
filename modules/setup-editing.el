@@ -168,9 +168,8 @@ point reaches the beginning or end of the buffer, stop there."
 ;; git-timemachine
 (use-package git-timemachine :defer t)
 
-(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
-(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
-(add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
+(use-package lua-mode
+  :mode "\\.lua$")
 
 (use-package ox-reveal
   :ensure ox-reveal)

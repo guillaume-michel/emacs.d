@@ -18,7 +18,6 @@
   '(
     bind-key
     git-timemachine
-    lua-mode
     ox-reveal
     prettier-js
     pip-requirements
