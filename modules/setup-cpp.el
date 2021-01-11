@@ -3,7 +3,7 @@
 ;; define custom style: "guillaume"
 (c-add-style "guillaume"
              '("linux"
-               (c-basic-offset . 4) ; 1 ident is 4 spaces
+               (c-basic-offset . 2) ; 1 ident is 2 spaces
                (c-offsets-alist
                 (innamespace . [0]) ; do not ident inside namespaces
                 (case-label . +)    ; indent case labels by 1 ident
