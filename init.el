@@ -17,7 +17,6 @@
 (defconst orilla-packages
   '(
     bind-key
-    dockerfile-mode
     git-timemachine
     glsl-mode
     lua-mode

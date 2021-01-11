@@ -142,7 +142,7 @@ point reaches the beginning or end of the buffer, stop there."
 (add-hook 'llvm-mode-hook #'demangle-mode)
 
 ;; Dockerfile
-(require 'dockerfile-mode)
+(use-package dockerfile-mode)
 
 ;; Vertical split shows more of each line, horizontal split shows more lines.
 ;; This code toggles between them
