@@ -127,13 +127,8 @@ point reaches the beginning or end of the buffer, stop there."
 (add-to-list 'auto-mode-alist '("\\.prototxt\\'" . caffe-mode))
 
 ;; GLSL
-(autoload 'glsl-mode "glsl-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.glsl\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.vert\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.frag\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.geom\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.vsh\\'" . glsl-mode))
-(add-to-list 'auto-mode-alist '("\\.fsh\\'" . glsl-mode))
+(use-package glsl-mode
+  :mode ("\\.glsl\\'" "\\.vert\\'" "\\.frag\\'" "\\.geom\\'" "\\.vsh\\'" "\\.fsh\\'"))
 
 ;; Dockerfile
 (use-package dockerfile-mode)

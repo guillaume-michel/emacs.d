@@ -18,7 +18,6 @@
   '(
     bind-key
     git-timemachine
-    glsl-mode
     lua-mode
     ox-reveal
     prettier-js
