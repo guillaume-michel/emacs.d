@@ -109,15 +109,14 @@ point reaches the beginning or end of the buffer, stop there."
   (my-leader-def
    "ts" '(zygospore-toggle-delete-other-windows :which-key "single window")))
 
-;; Add cmake listfile names to the mode list.
-(setq auto-mode-alist
-      (append
-       '(("CMakeLists\\.txt\\'" . cmake-mode))
-       '(("\\.cmake\\'" . cmake-mode))
-       auto-mode-alist))
+;; CMake support
+(use-package cmake-mode
+  :diminish
+  :mode ("CMakeLists\\.txt\\'" "\\.cmake\\'"))
 
-(autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
-(add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+(use-package cmake-font-lock
+  :diminish
+  :hook (cmake-mode . cmake-font-lock-activate))
 
 ;; rainbow
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)

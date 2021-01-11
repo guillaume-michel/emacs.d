@@ -17,8 +17,6 @@
 (defconst orilla-packages
   '(
     bind-key
-    cmake-mode
-    cmake-font-lock
     dockerfile-mode
     git-timemachine
     glsl-mode
