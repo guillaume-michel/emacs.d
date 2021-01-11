@@ -18,7 +18,6 @@
   '(
     bind-key
     git-timemachine
-    ox-reveal
     pip-requirements
     sbt-mode
     ))
