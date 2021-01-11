@@ -333,6 +333,11 @@
   :bind
   (("C-c <f1>" . google-this-cpp-reference)))
 
+;; browse kill-ring
+(use-package browse-kill-ring
+  :ensure t
+  :bind (("C-M-y" . browse-kill-ring)))
+
 (defun slime-style-init-command (port-filename _coding-system extra-args)
   "Return a string to initialize Lisp."
   (let ((loader (if (file-name-absolute-p slime-backend)
