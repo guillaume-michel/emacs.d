@@ -48,7 +48,6 @@
     sbt-mode
     smartparens
     yaml-mode
-    yasnippet
     ))
 
 ;; ------------------ VARIABLES -------------------------------
