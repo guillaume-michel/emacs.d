@@ -8,6 +8,7 @@
   :init
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
   (setq lsp-enable-indentation t
+        lsp-semantic-tokens-enable nil
         lsp-auto-guess-root t
         lsp-prefer-flymake nil)
   :config
