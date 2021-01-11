@@ -27,6 +27,8 @@
 
 (add-hook 'lsp-mode 'my-lsp-c++-hook)
 
+(add-hook 'c++-mode-hook (lambda ()
+                           (require 'dap-cpptools)))
 ;; Use clangcheck for flycheck in C++ mode
 (defun my-select-clangcheck-for-checker ()
   "Select clang-check for flycheck's checker."
