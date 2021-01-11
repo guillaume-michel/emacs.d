@@ -1,3 +1,5 @@
+(add-hook 'c++-mode-hook 'lsp-deferred)
+
 ;; define custom style: "guillaume"
 (c-add-style "guillaume"
              '("linux"

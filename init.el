@@ -21,10 +21,7 @@
     clang-format
     cmake-mode
     cmake-font-lock
-    company
-    company-irony
     dockerfile-mode
-    flycheck
     flyspell
     git-timemachine
     glsl-mode
@@ -34,7 +31,6 @@
     ;; helm-gtags
     ;; helm-projectile
     ;; helm-swoop
-    irony
     lua-mode
     modern-cpp-font-lock
     ox-reveal
@@ -316,7 +312,7 @@
 ;; setup c++ indentation and style, fix C++11 issues
 (require 'setup-cpp)
 
-;; setup company and irony mode for code completion with clang
+;; setup code completion
 (require 'setup-completion)
 
 (global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
