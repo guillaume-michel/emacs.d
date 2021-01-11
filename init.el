@@ -209,7 +209,7 @@
 ;; to offer you all possible completions for the prefix
 (use-package which-key
   :init (which-key-mode)
-  :diminish which-key-mode
+  :diminish
   :config
   (setq which-key-idle-delay 0.3))
 
@@ -275,6 +275,7 @@
   (ivy-rich-mode 1))
 
 (use-package counsel
+  :diminish
   :bind (("C-M-j" . 'counsel-switch-buffer)
          :map minibuffer-local-map
          ("C-r" . 'counsel-minibuffer-history))
@@ -342,6 +343,7 @@
 
 ;; Automatically clean whitespace created during current editing
 (use-package ws-butler
+  :diminish
   :hook ((text-mode . ws-butler-mode)
          (prog-mode . ws-butler-mode)))
 
@@ -356,7 +358,7 @@
 
 ;; Package: projejctile
 (use-package projectile
-  :diminish projectile-mode
+  :diminish
   :config (projectile-mode)
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap
