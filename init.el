@@ -120,6 +120,12 @@
 (dolist (mode '(org-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+;; Copy/paste stuff
+(setq select-enable-clipboard t
+      select-enable-primary t
+      save-interprogram-paste-before-kill t
+      mouse-yank-at-point t)
+
 ;; ----------------- KEY BINDINGS --------------------
 ;; general is used for easy keybinding configuration
 ;; that integrates well with which-key
