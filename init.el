@@ -23,7 +23,6 @@
     prettier-js
     pip-requirements
     sbt-mode
-    yaml-mode
     ))
 
 ;; ------------------ VARIABLES -------------------------------

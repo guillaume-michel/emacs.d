@@ -162,9 +162,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 (global-set-key (kbd "<f8>") 'toggle-window-split)
 
-(add-hook 'yaml-mode-hook
-          (lambda ()
-            (define-key yaml-mode-map "\C-m" 'newline-and-indent)))
+(use-package yaml-mode
+  :mode "\\.ya?ml\\'")
 
 ;; git-timemachine
 (use-package git-timemachine :defer t)
