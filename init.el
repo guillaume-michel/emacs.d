@@ -22,9 +22,7 @@
     dockerfile-mode
     git-timemachine
     glsl-mode
-    google-c-style
     lua-mode
-    modern-cpp-font-lock
     ox-reveal
     prettier-js
     pip-requirements
@@ -290,11 +288,11 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
-;; setup c++ indentation and style, fix C++11 issues
-(require 'setup-cpp)
-
 ;; setup code completion
 (require 'setup-completion)
+
+;; setup c++ language support
+(require 'setup-cpp)
 
 (global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
 

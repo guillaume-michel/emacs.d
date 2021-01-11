@@ -139,17 +139,8 @@ point reaches the beginning or end of the buffer, stop there."
 (add-to-list 'auto-mode-alist '("\\.vsh\\'" . glsl-mode))
 (add-to-list 'auto-mode-alist '("\\.fsh\\'" . glsl-mode))
 
-;; C++
-(add-to-list 'auto-mode-alist '("\\.ipp\\'" . c++-mode))
-
-;; modern cpp font lock
-(add-hook 'c++-mode-hook #'modern-c++-font-lock-mode)
-
 ;; demangle mode
 (add-hook 'llvm-mode-hook #'demangle-mode)
-
-;; Cuda
-(add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
 
 ;; Dockerfile
 (require 'dockerfile-mode)

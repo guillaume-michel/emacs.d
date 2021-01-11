@@ -1,7 +1,3 @@
-(setq llvm-root "/usr/lib/llvm-11")
-(setq my-clangd-executable (expand-file-name "bin/clangd" llvm-root))
-(setq my-clang-check-executable (expand-file-name "bin/clang-check" llvm-root))
-
 (defun efs/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(symbols))
   (lsp-headerline-breadcrumb-mode))
@@ -13,8 +9,6 @@
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
   (setq lsp-enable-indentation t
         lsp-auto-guess-root t
-        lsp-clients-clangd-executable my-clangd-executable
-        lsp-clients-clangd-args (list (concat "--query-driver=" llvm-root "**") "-background-index")
         lsp-prefer-flymake nil)
   :config
   (lsp-enable-which-key-integration t))
@@ -68,21 +62,6 @@
 (use-package flycheck
   :defer t
   :hook (lsp-mode . flycheck-mode))
-
-;; Use clangcheck for flycheck in C++ mode
-(defun my-select-clangcheck-for-checker ()
-  "Select clang-check for flycheck's checker."
-  (require 'flycheck-clangcheck)
-  (flycheck-set-checker-executable 'c/c++-clangcheck my-clang-check-executable)
-  (flycheck-select-checker 'c/c++-clangcheck))
-
-(use-package flycheck-clangcheck
-  :ensure t
-  :config
-  (setq flycheck-clangcheck-analyze t
-        flycheck-clangcheck-extra-arg-before '("-std=c++2a")
-        flycheck-clangcheck-extra-arg '("-Xanalyzer" "-analyzer-output=text"))
-  :hook (c++-mode . my-select-clangcheck-for-checker))
 
 ;; Yasnippet
 (use-package yasnippet
