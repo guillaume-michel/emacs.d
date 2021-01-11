@@ -229,7 +229,10 @@
 
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15)))
+  :custom ((doom-modeline-height 15)
+           (doom-modeline-buffer-file-name-style 'buffer-name)
+           (doom-modeline-buffer-encoding nil)
+           (doom-modeline-vcs-max-length 20)))
 
 ;; Theme
 (require 'setup-theme)
