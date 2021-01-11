@@ -58,17 +58,18 @@ point reaches the beginning or end of the buffer, stop there."
   (show-paren-mode 1))
 
 ;; Package: smartparens
-(require 'smartparens-config)
-(setq sp-base-key-bindings 'paredit)
-(setq sp-autoskip-closing-pair 'always)
-(setq sp-hybrid-kill-entire-symbol nil)
-(setq sp-highlight-pair-overlay nil)
-(setq sp-highlight-wrap-overlay nil)
-(setq sp-highlight-wrap-tag-overlay nil)
-(sp-use-paredit-bindings)
-
-(show-smartparens-global-mode t)
-(smartparens-global-mode t)
+(use-package smartparens
+  :diminish
+  :hook (prog-mode . smartparens-mode)
+  :config
+  (require 'smartparens-config)
+  (setq sp-base-key-bindings 'paredit)
+  (setq sp-autoskip-closing-pair 'always)
+  (setq sp-hybrid-kill-entire-symbol nil)
+  (setq sp-highlight-pair-overlay nil)
+  (setq sp-highlight-wrap-overlay nil)
+  (setq sp-highlight-wrap-tag-overlay nil)
+  (sp-use-paredit-bindings))
 
 ;; highlight the current line
 (global-hl-line-mode 1)

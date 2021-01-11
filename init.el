@@ -26,7 +26,6 @@
     rainbow-delimiters
     rainbow-identifiers
     sbt-mode
-    smartparens
     yaml-mode
     ))
 
