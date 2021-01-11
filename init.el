@@ -23,8 +23,6 @@
     ox-reveal
     prettier-js
     pip-requirements
-    rainbow-delimiters
-    rainbow-identifiers
     sbt-mode
     yaml-mode
     ))

@@ -119,11 +119,8 @@ point reaches the beginning or end of the buffer, stop there."
   :hook (cmake-mode . cmake-font-lock-activate))
 
 ;; rainbow
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
-;;(add-hook 'prog-mode-hook 'rainbow-identifiers-mode)
-(add-hook 'python-mode-hook     'rainbow-identifiers-mode)
-;;(add-hook 'emacs-lisp-mode-hook 'rainbow-identifiers-mode)
-;;(add-hook 'lisp-mode-hook       'rainbow-identifiers-mode)
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; Caffe prototxt
 (autoload 'caffe-mode "caffe-mode" "Major mode for Caffe" t)
