@@ -3,6 +3,9 @@
 ;; set high threshold to boost startup
 (setq gc-cons-threshold (* 500 1000 1000))
 
+;; Increase the number of bytes that are read by default from the process
+(setq read-process-output-max (* 10 1024 1024))
+
 ;; Profile emacs startup & setup normal GC threshold
 (add-hook 'emacs-startup-hook
           (lambda ()
