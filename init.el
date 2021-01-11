@@ -17,7 +17,6 @@
 (defconst orilla-packages
   '(
     bind-key
-    clang-format
     cmake-mode
     cmake-font-lock
     dockerfile-mode
