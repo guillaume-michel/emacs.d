@@ -138,9 +138,6 @@ point reaches the beginning or end of the buffer, stop there."
 (add-to-list 'auto-mode-alist '("\\.vsh\\'" . glsl-mode))
 (add-to-list 'auto-mode-alist '("\\.fsh\\'" . glsl-mode))
 
-;; demangle mode
-(add-hook 'llvm-mode-hook #'demangle-mode)
-
 ;; Dockerfile
 (use-package dockerfile-mode)
 
