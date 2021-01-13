@@ -175,4 +175,7 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package prettier-js
   :hook (js-mode . prettier-js-mode))
 
+(use-package meson-mode
+  :defer t)
+
 (provide 'setup-editing)
