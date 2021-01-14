@@ -23,7 +23,7 @@
 (defun my-lsp-c++-hook ()
   "Configure clangd as C++ backend for lsp"
   (setq lsp-clients-clangd-executable my-clangd-executable
-        lsp-clients-clangd-args (list (concat "--query-driver=" llvm-root "**") "-background-index")))
+        lsp-clients-clangd-args (list (concat "--query-driver=" llvm-root "**") "-background-index" "--log=info")))
 
 (add-hook 'lsp-mode 'my-lsp-c++-hook)
 
