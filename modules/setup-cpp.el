@@ -23,7 +23,7 @@
 (defun my-lsp-c++-hook ()
   "Configure clangd as C++ backend for lsp"
   (setq lsp-clients-clangd-executable my-clangd-executable
-        lsp-clients-clangd-args (list (concat "--query-driver=" llvm-root "**") "-background-index" "--log=info")))
+        lsp-clients-clangd-args (list (concat "--query-driver=" llvm-root "**") "-background-index" "--log=verbose" "--folding-ranges")))
 
 (add-hook 'lsp-mode 'my-lsp-c++-hook)
 
@@ -41,7 +41,8 @@
   :config
   (setq flycheck-clangcheck-analyze t
         flycheck-clangcheck-extra-arg-before '("-std=c++2a")
-        flycheck-clangcheck-extra-arg '("-Xanalyzer" "-analyzer-output=text"))
+        ;; flycheck-clangcheck-extra-arg '("-Xanalyzer" "-analyzer-output=text")
+        )
   :hook (c++-mode . my-select-clangcheck-for-checker))
 
 
