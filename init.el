@@ -210,10 +210,6 @@
         '((t . ivy--regex-ignore-order)))
   )
 
-(use-package ivy-rich
-  :init
-  (ivy-rich-mode 1))
-
 (use-package counsel
   :diminish
   :bind (("C-M-j" . 'counsel-switch-buffer)
@@ -223,6 +219,11 @@
   (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
   :config
   (counsel-mode 1))
+
+(use-package ivy-rich
+  :after counsel
+  :init
+  (ivy-rich-mode 1))
 
 (use-package ivy-prescient
   :after counsel
