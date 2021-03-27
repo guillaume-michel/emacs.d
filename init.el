@@ -1,8 +1,12 @@
+;; ---------------- STARTUP SPEEDUP --------------------------------------------
 ;; The default is 800 kilobytes.  Measured in bytes.
 ;; set high threshold to boost startup
 (setq gc-cons-threshold (* 500 1000 1000))
 
-;; Profile emacs startup
+;; Increase the number of bytes that are read by default from the process
+(setq read-process-output-max (* 10 1024 1024))
+
+;; Profile emacs startup & setup normal GC threshold
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "*** Emacs loaded in %s with %d garbage collections."
@@ -13,70 +17,54 @@
             ;; reduce gc threshold to avoid freezes during GC
             (setq gc-cons-threshold (* 50 1000 1000))))
 
-(defconst orilla-packages
-  '(
-    ansi-color
-    bind-key
-    clang-format
-    clean-aindent-mode
-    cmake-mode
-    cmake-font-lock
-    company
-    company-irony
-    company-jedi
-    dockerfile-mode
-    flycheck
-    flyspell
-    git-timemachine
-    glsl-mode
-    google-c-style
-    helm
-    helm-bibtex
-    helm-gtags
-    helm-projectile
-    helm-swoop
-    irony
-    jedi
-    lua-mode
-    magit
-    modern-cpp-font-lock
-    ox-reveal
-    prettier-js
-    projectile
-    pip-requirements
-    rainbow-delimiters
-    rainbow-identifiers
-    sbt-mode
-    smartparens
-    ws-butler
-    yaml-mode
-    yasnippet
-    zygospore
-    ))
-
 ;; ------------------ VARIABLES -------------------------------
 (add-to-list 'load-path (expand-file-name "modules" user-emacs-directory))
 
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file 'noerror)
-
-;; ------------------- MAC Specifics --------------------------
-;; Are we on a mac?
-(setq is-mac (equal system-type 'darwin))
-
 ;; ------------------- INIT PACKAGES --------------------------
 (require 'setup-packages)
-(install-packages orilla-packages)
 
-;; Setup environment variables from the user's shell.
-(when is-mac
-  (require-package 'exec-path-from-shell)
+;; ---------------- Keep .emacs.d clean ------------------------
+;; NOTE: If you want to move everything out of the ~/.emacs.d folder
+;; reliably, set `user-emacs-directory` before loading no-littering!
+(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
+      url-history-file (expand-file-name "url/history" user-emacs-directory))
+
+;; Use no-littering to automatically set common paths to the new user-emacs-directory
+(use-package no-littering)
+
+;; no-littering doesn't set this by default so we must place
+;; auto save files in the same path as it uses for sessions
+(setq auto-save-file-name-transforms
+      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+
+;; additional config for extra files management
+(setq backup-by-copying t
+      delete-old-versions t
+      kept-new-versions 6
+      kept-old-versions 2
+      version-control t)  ; use versioned backups
+
+(message "Deleting old backup files...")
+(let ((week (* 60 60 24 7))
+      (current (float-time (current-time))))
+  (dolist (file (directory-files no-littering-var-directory t))
+    (when (and (backup-file-name-p file)
+               (> (- current (float-time (nth 5 (file-attributes file))))
+                  week))
+      (message "%s" file)
+      (delete-file file))))
+
+;; Keep customization settings apart from ~/.emacs.d
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file 'noerror)
+
+;; ------------ MAC SPECIFIC WORKAROUND ------------------------
+(use-package exec-path-from-shell
+  :ensure t
+  :if (memq window-system '(mac ns x))
+  :config
+  (setq exec-path-from-shell-variables '("PATH" "PYTHONPATH"))
   (exec-path-from-shell-initialize))
-
-;; ------------------- Early customization ---------------------
-;; this variables must be set before load helm-gtags
-;; you can change to any prefix key of your choice
-(setq helm-gtags-prefix-key "\C-cg")
 
 ;; ------------------- SANE SETTINGS ---------------------------
 
@@ -84,14 +72,21 @@
 (setq load-prefer-newer t)
 
 ;; warn when opening files bigger than 100MB
-(setq large-file-warning-threshold 100000000)
+(setq large-file-warning-threshold (* 100 1024 1024))
 
 (setq inhibit-startup-message t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; disable menu bar
-(menu-bar-mode -1)
+;; minimal view setup
+(scroll-bar-mode -1)        ; Disable visible scrollbar
+(tool-bar-mode -1)          ; Disable the toolbar
+(tooltip-mode -1)           ; Disable tooltips
+(set-fringe-mode 10)        ; Give some breathing room
+(menu-bar-mode -1)            ; Disable the menu bar
+
+;; maximize frame
+(toggle-frame-maximized)
 
 ;; scroll one line at a time (less "jumpy" than defaults)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -112,16 +107,8 @@
 ;; show column number in modeline
 (column-number-mode)
 
-;; ;; show line number on the left
-;; (global-display-line-numbers-mode t)
-
-;; ;; Disable line numbers for some modes
-;; (dolist (mode '(org-mode-hook
-;;                 term-mode-hook
-;;                 shell-mode-hook
-;;                 treemacs-mode-hook
-;;                 eshell-mode-hook))
-;;   (add-hook mode (lambda () (display-line-numbers-mode 0))))
+;; minimum line number column width
+(setq-default display-line-numbers-width 4)
 
 ;; Enable line numbers for some modes
 (dolist (mode '(text-mode-hook
@@ -133,26 +120,155 @@
 (dolist (mode '(org-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
+;; Copy/paste stuff
+(setq select-enable-clipboard t
+      select-enable-primary t
+      save-interprogram-paste-before-kill t
+      mouse-yank-at-point t)
+
+;; ----------------- KEY BINDINGS --------------------
+;; general is used for easy keybinding configuration
+;; that integrates well with which-key
+(use-package general
+  :config
+  (general-create-definer my-leader-def
+    :prefix "s-/")
+
+  ;; Global keybindings
+  (my-leader-def
+   "t"  '(:ignore t :which-key "toggles")
+   "tw" 'whitespace-mode)
+
+  ;; (general-define-key
+  ;;  "<escape>" 'keyboard-escape-quit)
+  )
+
+;; ------------------ UI Configuration ----------------
+;; set font size
+(set-face-attribute 'default nil :height 90)
+(set-face-attribute 'fixed-pitch nil :height 90)
+(set-face-attribute 'variable-pitch nil :height 90 :weight 'regular)
+
+;; for compilation buffer
+(use-package ansi-color)
+
+;; which-key is a useful UI panel that appears
+;; when you start pressing any key binding in Emacs
+;; to offer you all possible completions for the prefix
+(use-package which-key
+  :init (which-key-mode)
+  :diminish
+  :config
+  (setq which-key-idle-delay 0.3))
+
+(use-package all-the-icons
+  :if (display-graphic-p)
+  :commands all-the-icons-install-fonts
+  :init
+  (unless (find-font (font-spec :name "all-the-icons"))
+    (all-the-icons-install-fonts t)))
+
+(use-package all-the-icons-dired
+  :if (display-graphic-p)
+  :hook (dired-mode . all-the-icons-dired-mode))
+
+(use-package doom-modeline
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 15)
+           (doom-modeline-buffer-file-name-style 'buffer-name)
+           (doom-modeline-buffer-encoding nil)
+           (doom-modeline-vcs-max-length 20)))
 
 ;; Theme
 (require 'setup-theme)
 
-(require 'setup-helm)
-(require 'setup-helm-gtags)
+;; Stateful keymaps with Hydra
+(use-package hydra
+  :defer 1)
 
 ;; setup general editing
 (require 'setup-editing)
 
-(require 'helm-projectile)
-(helm-projectile-on)
-(setq projectile-completion-system 'helm)
-(setq projectile-indexing-method 'alien)
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper)
+         :map ivy-minibuffer-map
+         ("TAB" . ivy-alt-done)
+         ("C-l" . ivy-alt-done)
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line)
+         :map ivy-switch-buffer-map
+         ("C-k" . ivy-previous-line)
+         ("C-l" . ivy-done)
+         ("C-d" . ivy-switch-buffer-kill)
+         :map ivy-reverse-i-search-map
+         ("C-k" . ivy-previous-line)
+         ("C-d" . ivy-reverse-i-search-kill))
+  :config
+  (ivy-mode 1)
+  (setq ivy-re-builders-alist
+        '((t . ivy--regex-ignore-order)))
+  )
 
-;; setup c++ indentation and style, fix C++11 issues
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+
+(use-package counsel
+  :diminish
+  :bind (("C-M-j" . 'counsel-switch-buffer)
+         :map minibuffer-local-map
+         ("C-r" . 'counsel-minibuffer-history))
+  :custom
+  (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
+  :config
+  (counsel-mode 1))
+
+(use-package ivy-prescient
+  :after counsel
+  :custom
+  (ivy-prescient-enable-filtering nil)
+  :config
+  ;; Uncomment the following line to have sorting remembered across sessions!
+  ;(prescient-persist-mode 1)
+  (ivy-prescient-mode 1))
+
+(use-package ivy-hydra
+  :defer t
+  :after hydra)
+
+(use-package flx  ;; Improves sorting for fuzzy-matched results
+  :after ivy
+  :defer t
+  :init
+  (setq ivy-flx-limit 10000))
+
+(use-package wgrep)
+
+(use-package helpful
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . counsel-describe-function)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-variable] . counsel-describe-variable)
+  ([remap describe-key] . helpful-key))
+
+;; setup code completion
+(require 'setup-completion)
+
+;; setup debuggers
+(require 'setup-debugger)
+
+;; setup c++ language support
 (require 'setup-cpp)
 
-;; setup company and irony mode for code completion with clang
-(require 'setup-completion)
+;; setup python language support
+(require 'setup-python)
+
+;; setup rust language support
+(require 'setup-rust)
 
 (global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
 
@@ -165,17 +281,20 @@
 ;; use space to indent by default
 (setq-default indent-tabs-mode nil)
 
-;; set appearance of a tab that is represented by 4 spaces
-(setq-default tab-width 4)
-(setq tab-stop-list (number-sequence 4 200 4))
+;; set appearance of a tab that is represented by 2 spaces
+(setq-default tab-width 2)
+(setq tab-stop-list (number-sequence 2 200 2))
 
 ;; Package: clean-aindent-mode
-(require 'clean-aindent-mode)
-(add-hook 'prog-mode-hook 'clean-aindent-mode)
+(use-package clean-aindent-mode
+  :diminish
+  :hook (prog-mode . clean-aindent-mode))
 
-;; Package: ws-butler
-(require 'ws-butler)
-(add-hook 'prog-mode-hook 'ws-butler-mode)
+;; Automatically clean whitespace created during current editing
+(use-package ws-butler
+  :diminish
+  :hook ((text-mode . ws-butler-mode)
+         (prog-mode . ws-butler-mode)))
 
 ;; remove trailing whitespaces before saving
 ;(add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -186,41 +305,21 @@
                                (setq-local compilation-read-command nil)
                                (call-interactively 'compile)))
 
-;; place auto save files in "temp" dir
-(setq
- backup-by-copying t
- backup-directory-alist `(("." . ,temporary-file-directory)) ; don't litter my fs tree
- delete-old-versions t
- kept-new-versions 6
- kept-old-versions 2
- version-control t)  ; use versioned backups
+;; Package: projectile
+(use-package projectile
+  :diminish
+  :config (projectile-mode)
+  :custom ((projectile-completion-system 'ivy))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  ;; NOTE: Set this to the folder where you keep your Git repos!
+  (when (file-directory-p "~/work")
+    (setq projectile-project-search-path '("~/work")))
+  (setq projectile-switch-project-action #'projectile-dired))
 
-;; save auto save to tmp
-(setq auto-save-file-name-transforms `((".*" ,temporary-file-directory t)))
-(setq auto-save-list-file-prefix temporary-file-directory)
-
-(message "Deleting old backup files...")
-(let ((week (* 60 60 24 7))
-      (current (float-time (current-time))))
-  (dolist (file (directory-files temporary-file-directory t))
-    (when (and (backup-file-name-p file)
-               (> (- current (float-time (nth 5 (file-attributes file))))
-                  week))
-      (message "%s" file)
-      (delete-file file))))
-
-;; Package: projejctile
-(require 'projectile)
-(projectile-global-mode)
-(setq projectile-enable-caching t)
-(define-key projectile-mode-map (kbd "H-p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-
-;; shortcuts with SUPER but doesn't work on OSX
-;;(define-key projectile-mode-map [?\s-d] 'projectile-find-dir)
-;;(define-key projectile-mode-map [?\s-p] 'projectile-switch-project)
-;;(define-key projectile-mode-map [?\s-f] 'projectile-find-file)
-;;(define-key projectile-mode-map [?\s-g] 'projectile-grep)
+(use-package counsel-projectile
+  :config (counsel-projectile-mode))
 
 ;; compilation helpers
 (require 'setup-compilation)
@@ -229,10 +328,24 @@
 (when (fboundp 'winner-mode)
   (winner-mode 1))
 
-(require 'bazel-mode)
+;; Bazel
+(use-package bazel-mode)
 
 ;; magit
-(global-set-key (kbd "C-x g") 'magit-status)
+(use-package magit)
+(general-define-key
+ "C-x g" 'magit-status)
+
+;; Google-this
+(use-package google-this
+  :ensure t
+  :bind
+  (("C-c <f1>" . google-this-cpp-reference)))
+
+;; browse kill-ring
+(use-package browse-kill-ring
+  :ensure t
+  :bind (("C-M-y" . browse-kill-ring)))
 
 (defun slime-style-init-command (port-filename _coding-system extra-args)
   "Return a string to initialize Lisp."
