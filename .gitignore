@@ -5,3 +5,6 @@ projectile-bookmarks.eld
 projectile.cache
 irony/
 custom.el
+straight/build-cache.el
+straight/build
+straight/repos
