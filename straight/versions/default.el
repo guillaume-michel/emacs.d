@@ -43,6 +43,7 @@
  ("hydra" . "2d553787aca1aceb3e6927e426200e9bb9f056f1")
  ("ivy-rich" . "7b9b7b20c3ead81da90232cd6707dfad3c1f1eb3")
  ("julia-emacs" . "fe6f6f7a80f8d60ecffa5b2cb43667bb9dc11705")
+ ("julia-repl" . "79e686e3ebf164bd39fc2ea5cf09d38d0e1d763a")
  ("let-alist" . "6708ec0b2e6dff80ff5b64698aa009d9070a2ed2")
  ("lsp-ivy" . "515e5977b3d1f6cb521984f084868f28efd47e72")
  ("lsp-julia" . "81f7de5b9fe8e8e0e1e3a3ccc677f052edad140d")
