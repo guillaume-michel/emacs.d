@@ -2,6 +2,10 @@
   :ensure t
   :hook (julia-mode . lsp-deferred))
 
+(use-package julia-repl
+  :ensure t
+  :hook (julia-mode . julia-repl-mode))
+
 (use-package lsp-julia
   :ensure t
   :config
