@@ -22,4 +22,20 @@
 (use-package flycheck-rust
   :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
+;; configure repl
+;; based on: https://github.com/SerialDev/evcxr-mode
+
+;; needed for evcxr
+(use-package parsec
+  :ensure t)
+
+(straight-use-package
+ '(evcxr
+   :type git
+   :host github
+   :repo "serialdev/evcxr-mode"
+   :config
+   (add-hook 'rust-mode-hook #'evcxr-minor-mode)
+))
+
 (provide 'setup-rust)
