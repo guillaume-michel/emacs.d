@@ -279,6 +279,9 @@
 ;; setup julia language support
 (require 'setup-julia)
 
+;; setup cuda language support
+(require 'setup-cuda)
+
 (global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
 
 ;; activate whitespace-mode to view all whitespace characters

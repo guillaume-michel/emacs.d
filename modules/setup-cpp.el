@@ -14,9 +14,6 @@
 
 (add-to-list 'auto-mode-alist '("\\.ipp\\'" . c++-mode))
 
-;; Cuda is considered C++
-(add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
-
 ;; LSP with C++
 (add-hook 'c++-mode-hook 'lsp-deferred)
 
