@@ -7,7 +7,7 @@
 (defun na-recompile ()
   "Run compile and resize the compile window closing the old one if necessary"
   (interactive)
-  (let ((compile-command "namake.sh")
+  (let ((compile-command (format "cmake --build %s --parallel $(($(nproc) + 1))" cmake-ide-build-dir))
         (compilation-read-command nil))
     (if (get-buffer "*compilation*") ; If old compile window exists
         (call-interactively 'recompile)
@@ -16,7 +16,7 @@
 (defun compile-clean ()
   "Switches between compile command and clean command"
   (interactive)
-  (let ((compile-command "namake.sh clean")
+  (let ((compile-command . (format "cmake --build %s --target clean --parallel $(($(nproc) + 1))" cmake-ide-build-dir))
         (compilation-read-command nil))
     (call-interactively 'compile)))
 
