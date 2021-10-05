@@ -13,6 +13,7 @@
   :hook (c++-mode . modern-c++-font-lock-mode))
 
 (add-to-list 'auto-mode-alist '("\\.ipp\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 
 ;; LSP with C++
 (add-hook 'c++-mode-hook 'lsp-deferred)
@@ -20,7 +21,7 @@
 (defun my-lsp-c++-hook ()
   "Configure clangd as C++ backend for lsp"
   (setq lsp-clients-clangd-executable my-clangd-executable
-        lsp-clients-clangd-args (list (concat "--query-driver=" llvm-root "**") "-background-index" "--log=verbose" "--folding-ranges")))
+        lsp-clients-clangd-args (list (concat "--query-driver=" llvm-root "**") "-background-index" "--log=verbose" "--folding-ranges" "--clang-tidy" "--inlay-hints" "-j$(($(nproc) / 2))")))
 
 (add-hook 'lsp-mode 'my-lsp-c++-hook)
 
