@@ -293,9 +293,9 @@
 ;; use space to indent by default
 (setq-default indent-tabs-mode nil)
 
-;; set appearance of a tab that is represented by 2 spaces
-(setq-default tab-width 2)
-(setq tab-stop-list (number-sequence 2 200 2))
+;; set appearance of a tab that is represented by 4 spaces
+(setq-default tab-width 4)
+;;(setq tab-stop-list (number-sequence 4 200 4))
 
 ;; Package: clean-aindent-mode
 (use-package clean-aindent-mode
