@@ -321,6 +321,10 @@
 (use-package projectile
   :diminish
   :config (projectile-mode)
+  ;; (setq projectile-mode-line
+  ;;       '(:eval (format " Projectile[%s(%s)]"
+  ;;                       (projectile-project-name))))
+  (setq projectile-mode-line "Projectile")
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap
   ("C-c p" . projectile-command-map)
@@ -328,7 +332,8 @@
   ;; NOTE: Set this to the folder where you keep your Git repos!
   (when (file-directory-p "~/work")
     (setq projectile-project-search-path '("~/work")))
-  (setq projectile-switch-project-action #'projectile-dired))
+  (setq projectile-switch-project-action #'projectile-dired)
+  (setq projectile-enable-caching t))
 
 (use-package counsel-projectile
   :config (counsel-projectile-mode))
