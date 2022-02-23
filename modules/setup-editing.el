@@ -126,6 +126,22 @@ point reaches the beginning or end of the buffer, stop there."
   :diminish
   :hook (cmake-mode . cmake-font-lock-activate))
 
+(defun my-cmake-mode-hook ()
+  (cmake-format-mode 1))
+
+(require 'cmake-format)
+;(add-hook 'cmake-mode-hook #'my-cmake-mode-hook)
+
+;; (use-package cmake-format
+;;   :init
+;;   ;; optional: enable automatic formatting on save
+;;   (add-hook 'cmake-mode-hook #'my-cmake-mode-hook)
+;;   ;; :config
+;;   ;; ;; optional:
+;;   ;; (setq cmake-format-command "/path/to/cmake-format"
+;;   ;;       cmake-format-args '("list" "of" "flags"))
+;;   )
+
 ;; rainbow
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))

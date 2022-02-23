@@ -346,12 +346,19 @@
   (winner-mode 1))
 
 ;; Bazel
-(use-package bazel-mode)
+;; (use-package bazel-mode)
 
 ;; magit
 (use-package magit)
 (general-define-key
  "C-x g" 'magit-status)
+
+(use-package magit-lfs
+  :ensure t
+  :after magit)
+
+(use-package forge
+  :after magit)
 
 ;; Google-this
 (use-package google-this
