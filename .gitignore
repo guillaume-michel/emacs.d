@@ -8,3 +8,4 @@ custom.el
 straight/build-cache.el
 straight/build
 straight/repos
+eln-cache/
