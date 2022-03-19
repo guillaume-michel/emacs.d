@@ -261,6 +261,9 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
+;; setup term
+(require 'setup-term)
+
 ;; setup code completion
 (require 'setup-completion)
 
