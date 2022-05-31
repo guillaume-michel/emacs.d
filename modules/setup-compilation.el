@@ -7,7 +7,9 @@
 (defun na-recompile ()
   "Run compile and resize the compile window closing the old one if necessary"
   (interactive)
-  (let (;;(compile-command (format "cmake --build %s --parallel $(($(nproc) + 1))" cmake-ide-build-dir))
+  (let* ((cmake-ide-project-dir (projectile-project-root))
+         (cmake-ide-build-dir (concat cmake-ide-project-dir "build"))
+         (compile-command (format "cmake --build %s --parallel $(($(nproc) + 1))" cmake-ide-build-dir))
         ;;(compile-command "cmake --build $HOME/work/mastermind/build --parallel $(($(nproc) + 1))")
         (compilation-read-command nil))
     ;; (if (get-buffer "*compilation*") ; If old compile window exists
@@ -15,10 +17,16 @@
        (call-interactively 'compile);;)
     ))
 
+;; (add-to-list 'safe-local-variable-values
+;;              '(compile-command . (format "cmake --build %s --parallel $(($(nproc) + 1))" cmake-ide-build-dir)))
+
+
 (defun compile-clean ()
   "Switches between compile command and clean command"
   (interactive)
-  (let (;;(compile-command . (format "cmake --build %s --target clean --parallel $(($(nproc) + 1))" cmake-ide-build-dir))
+  (let* ((cmake-ide-project-dir (projectile-project-root))
+        (cmake-ide-build-dir (concat cmake-ide-project-dir "build"))
+        (compile-command (format "cmake --build %s --target clean --parallel $(($(nproc) + 1))" cmake-ide-build-dir))
         ;;(compile-command . "cmake --build $HOME/work/mastermind/build --target clean --parallel $(($(nproc) + 1))")
         (compilation-read-command nil))
     (call-interactively 'compile)))
@@ -60,6 +68,18 @@
 (add-hook 'c++-mode-hook
       (lambda ()
         (define-key c++-mode-map (kbd "<f6>") 'kill-compilation)))
+
+(add-hook 'c-mode-hook
+      (lambda ()
+        (define-key c-mode-map (kbd "<f5>") 'na-recompile)))
+
+(add-hook 'c-mode-hook
+      (lambda ()
+        (define-key c-mode-map (kbd "<S-f5>") 'compile-clean)))
+
+(add-hook 'c-mode-hook
+      (lambda ()
+        (define-key c-mode-map (kbd "<f6>") 'kill-compilation)))
 
 ;; assure the compilation buffer is only opened once when multiple frames are open
 (add-to-list 'display-buffer-alist
