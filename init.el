@@ -261,6 +261,9 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
+;; setup buffers behavior
+(require 'setup-buffers)
+
 ;; setup term
 (require 'setup-term)
 
