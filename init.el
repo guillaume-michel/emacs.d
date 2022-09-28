@@ -288,6 +288,9 @@
 ;; setup cuda language support
 (require 'setup-cuda)
 
+;; setup protobuf support
+(require 'setup-protobuf)
+
 (global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
 
 ;; activate whitespace-mode to view all whitespace characters
