@@ -357,6 +357,14 @@
 ;; Bazel
 ;; (use-package bazel-mode)
 
+;; Cap'n Proto syntax highlighting
+(use-package capnp-mode
+  :init
+  (setq indent-tabs-mode nil)
+  (setq tab-width 4)
+  (setq indent-line-function 'insert-tab)
+)
+
 ;; magit
 (use-package magit)
 (general-define-key
