@@ -1,5 +1,5 @@
 ;; LLVM stuff
-(setq llvm-root "/usr/lib/llvm-14")
+(setq llvm-root "/usr/lib/llvm-15")
 (setq my-clangd-executable (expand-file-name "bin/clangd" llvm-root))
 (setq my-clang-check-executable (expand-file-name "bin/clang-check" llvm-root))
 
