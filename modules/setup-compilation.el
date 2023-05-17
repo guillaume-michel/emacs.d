@@ -62,11 +62,11 @@
             :fork (:host github
                    :repo "guillaume-michel/cmake-integration"))
   :bind (:map c++-mode-map
-              ([M-f5] . cmake-integration-save-and-compile) ;; Ask for the target name and compile it
+              ([S-f5] . cmake-integration-save-and-compile) ;; Ask for the target name and compile it
               ([f5] . cmake-integration-save-and-compile-last-target) ;; Recompile the last target
-              ([M-f12] . cmake-integration-run-last-target-with-arguments) ;; Ask for command line parameters to run the program
+              ([S-f12] . cmake-integration-run-last-target-with-arguments) ;; Ask for command line parameters to run the program
               ([f12] . cmake-integration-run-last-target) ;; Run the program (possible using the last command line parameters)
-              ([M-f7] . cmake-integration-cmake-configure-with-preset) ;; Ask for a preset name and call CMake
+              ([S-f7] . cmake-integration-cmake-configure-with-preset) ;; Ask for a preset name and call CMake
               ([f7] . cmake-integration-cmake-reconfigure) ;; Call CMake with the last chosen preset
               ))
 
