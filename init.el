@@ -388,6 +388,10 @@
   :ensure t
   :bind (("C-M-y" . browse-kill-ring)))
 
+(use-package sqlite3)
+
+(use-package emacsql)
+
 (defun slime-style-init-command (port-filename _coding-system extra-args)
   "Return a string to initialize Lisp."
   (let ((loader (if (file-name-absolute-p slime-backend)
