@@ -218,4 +218,9 @@ point reaches the beginning or end of the buffer, stop there."
 
   (add-hook 'terraform-mode-hook 'my-terraform-mode-init))
 
+(straight-use-package
+  '(livedown :type git
+             :host github
+             :repo "shime/emacs-livedown"))
+
 (provide 'setup-editing)
