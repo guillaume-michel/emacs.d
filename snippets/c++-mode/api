@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Include utilities/core/api.h
+# key: api
+# --
+#include <utilities/core/api.h>

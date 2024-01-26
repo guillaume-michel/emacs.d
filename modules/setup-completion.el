@@ -81,6 +81,10 @@
   :init (add-hook 'after-init-hook 'yas-global-mode)
   :config
   (setq yas-snippet-dirs
-        '("~/.emacs.d/snippets")))
+        '("~/.emacs.d/snippets"))
+  (define-key yas-minor-mode-map (kbd "<tab>") nil)
+  (define-key yas-minor-mode-map (kbd "TAB") nil)
+  (define-key yas-minor-mode-map (kbd "SPC") yas-maybe-expand)
+  (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand))
 
 (provide 'setup-completion)
