@@ -294,6 +294,10 @@
 ;; setup mojo language support
 (require 'mojo-mode)
 (require 'setup-mojo)
+
+;; setup zig
+(require 'setup-zig)
+
 (global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
 
 ;; activate whitespace-mode to view all whitespace characters
