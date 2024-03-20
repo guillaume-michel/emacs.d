@@ -223,4 +223,12 @@ point reaches the beginning or end of the buffer, stop there."
              :host github
              :repo "shime/emacs-livedown"))
 
+;; vertical indent highlighting
+(use-package highlight-indent-guides
+  :defer t
+  :config
+  (setq highlight-indent-guides-method 'character)
+  :hook
+  (python-mode . highlight-indent-guides-mode))
+
 (provide 'setup-editing)
