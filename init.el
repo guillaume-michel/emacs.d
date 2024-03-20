@@ -291,6 +291,9 @@
 ;; setup protobuf support
 (require 'setup-protobuf)
 
+;; setup mojo language support
+(require 'mojo-mode)
+(require 'setup-mojo)
 (global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
 
 ;; activate whitespace-mode to view all whitespace characters
