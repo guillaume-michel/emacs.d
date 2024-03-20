@@ -395,7 +395,7 @@
   :ensure t
   :bind (("C-M-y" . browse-kill-ring)))
 
-;;(use-package sqlite3)
+(use-package sqlite3)
 
 ;;(use-package emacsql)
 
