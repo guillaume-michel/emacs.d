@@ -261,6 +261,9 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
+;; setup buffers behavior
+(require 'setup-buffers)
+
 ;; setup term
 (require 'setup-term)
 
@@ -284,6 +287,16 @@
 
 ;; setup cuda language support
 (require 'setup-cuda)
+
+;; setup protobuf support
+(require 'setup-protobuf)
+
+;; setup mojo language support
+(require 'mojo-mode)
+(require 'setup-mojo)
+
+;; setup zig
+(require 'setup-zig)
 
 (global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
 
@@ -351,6 +364,14 @@
 ;; Bazel
 ;; (use-package bazel-mode)
 
+;; Cap'n Proto syntax highlighting
+(use-package capnp-mode
+  :init
+  (setq indent-tabs-mode nil)
+  (setq tab-width 4)
+  (setq indent-line-function 'insert-tab)
+)
+
 ;; magit
 (use-package magit)
 (general-define-key
@@ -373,6 +394,10 @@
 (use-package browse-kill-ring
   :ensure t
   :bind (("C-M-y" . browse-kill-ring)))
+
+(use-package sqlite3)
+
+;;(use-package emacsql)
 
 (defun slime-style-init-command (port-filename _coding-system extra-args)
   "Return a string to initialize Lisp."

@@ -57,25 +57,39 @@
 ;;           (shrink-window (- h compilation-window-height)))))))
 ;; (add-hook 'compilation-mode-hook 'my-compilation-hook)
 
-(add-hook 'c++-mode-hook
-      (lambda ()
-        (define-key c++-mode-map (kbd "<f5>") 'na-recompile)))
+(use-package cmake-integration
+  :straight '(cmake-integration :type git :host github :repo "darcamo/cmake-integration"
+            :fork (:host github
+                   :repo "guillaume-michel/cmake-integration"))
+  :bind (:map c++-mode-map
+              ([S-f5] . cmake-integration-save-and-compile) ;; Ask for the target name and compile it
+              ([f5] . cmake-integration-save-and-compile-last-target) ;; Recompile the last target
+              ([S-f12] . cmake-integration-run-last-target-with-arguments) ;; Ask for command line parameters to run the program
+              ([f12] . cmake-integration-run-last-target) ;; Run the program (possible using the last command line parameters)
+              ([S-f7] . cmake-integration-cmake-configure-with-preset) ;; Ask for a preset name and call CMake
+              ([f7] . cmake-integration-cmake-reconfigure) ;; Call CMake with the last chosen preset
+              ))
 
-(add-hook 'c++-mode-hook
-      (lambda ()
-        (define-key c++-mode-map (kbd "<S-f5>") 'compile-clean)))
+
+;; (add-hook 'c++-mode-hook
+;;       (lambda ()
+;;         (define-key c++-mode-map (kbd "<f5>") 'na-recompile)))
+
+;; (add-hook 'c++-mode-hook
+;;       (lambda ()
+;;         (define-key c++-mode-map (kbd "<S-f5>") 'compile-clean)))
 
 (add-hook 'c++-mode-hook
       (lambda ()
         (define-key c++-mode-map (kbd "<f6>") 'kill-compilation)))
 
-(add-hook 'c-mode-hook
-      (lambda ()
-        (define-key c-mode-map (kbd "<f5>") 'na-recompile)))
+;; (add-hook 'c-mode-hook
+;;       (lambda ()
+;;         (define-key c-mode-map (kbd "<f5>") 'na-recompile)))
 
-(add-hook 'c-mode-hook
-      (lambda ()
-        (define-key c-mode-map (kbd "<S-f5>") 'compile-clean)))
+;; (add-hook 'c-mode-hook
+;;       (lambda ()
+;;         (define-key c-mode-map (kbd "<S-f5>") 'compile-clean)))
 
 (add-hook 'c-mode-hook
       (lambda ()

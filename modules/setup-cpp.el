@@ -1,5 +1,5 @@
 ;; LLVM stuff
-(setq llvm-root "/usr/lib/llvm-14")
+(setq llvm-root "/usr/lib/llvm-17")
 (setq my-clangd-executable (expand-file-name "bin/clangd" llvm-root))
 (setq my-clang-check-executable (expand-file-name "bin/clang-check" llvm-root))
 
@@ -70,7 +70,7 @@
 (defun my-lsp-c++-hook ()
   "Configure clangd as C++ backend for lsp"
   (setq lsp-clients-clangd-executable my-clangd-executable
-        lsp-clients-clangd-args (list (concat "--query-driver=" llvm-root "**") "-background-index" "--log=verbose" "--folding-ranges" "--clang-tidy" "--inlay-hints" "-j$(($(nproc) / 2))")))
+        lsp-clients-clangd-args (list (concat "--query-driver=" llvm-root "**") "-background-index" "--log=verbose" "--folding-ranges" "--clang-tidy" "--inlay-hints" "-j$(($(nproc) / 2))" "--header-insertion=never" "--header-insertion-decorators" "--completion-style=detailed")))
 
 (add-hook 'lsp-mode 'my-lsp-c++-hook)
 

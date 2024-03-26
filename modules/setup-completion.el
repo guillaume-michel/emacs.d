@@ -1,3 +1,5 @@
+(require 's)
+
 (defun efs/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(symbols))
   (lsp-headerline-breadcrumb-mode))
@@ -12,7 +14,19 @@
         lsp-auto-guess-root t
         lsp-prefer-flymake nil)
   :config
-  (lsp-enable-which-key-integration t))
+  (lsp-enable-which-key-integration t)
+  ;; (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql rust-analyzer)))
+  ;;   (-let* (((&hash "value") contents)
+  ;;           (groups (--partition-by (s-blank? it) (s-lines value)))
+  ;;           (sig_group (if (s-equals? "```rust" (car (-third-item groups)))
+  ;;                          (-third-item groups)
+  ;;                        (car groups)))
+  ;;           (sig (--> sig_group
+  ;;                     (--drop-while (s-equals? "```rust" it) it)
+  ;;                     (--take-while (not (s-equals? "```" it)) it)
+  ;;                     (s-join "" it))))
+  ;;     (lsp--render-element (concat "```rust\n" sig "\n```"))))
+  )
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
@@ -67,6 +81,10 @@
   :init (add-hook 'after-init-hook 'yas-global-mode)
   :config
   (setq yas-snippet-dirs
-        '("~/.emacs.d/snippets")))
+        '("~/.emacs.d/snippets"))
+  (define-key yas-minor-mode-map (kbd "<tab>") nil)
+  (define-key yas-minor-mode-map (kbd "TAB") nil)
+  (define-key yas-minor-mode-map (kbd "SPC") yas-maybe-expand)
+  (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand))
 
 (provide 'setup-completion)
