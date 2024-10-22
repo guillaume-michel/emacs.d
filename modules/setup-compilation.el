@@ -37,10 +37,12 @@
         (if (null (string-match ".*exited abnormally.*" str))
             ;;no errors, make the compilation window go away in a few seconds
             (progn
-              (run-at-time
-               "2 sec" nil 'kill-buffer "*compilation*")
               ;; (run-at-time
-              ;;  "2 sec" nil 'delete-window (get-buffer-window "*compilation*"))
+              ;;  "2 sec" nil 'kill-buffer "*compilation*")
+              ;; (run-at-time
+              ;;  "1 sec" nil 'delete-window (get-buffer-window "*compilation*"))
+              ;;(popper-toggle)
+              (popper-close-latest)
               (message "No Compilation Errors!")))))
 
 ;; (setq split-height-threshold 0)
@@ -61,6 +63,8 @@
   :straight '(cmake-integration :type git :host github :repo "darcamo/cmake-integration"
             :fork (:host github
                    :repo "guillaume-michel/cmake-integration"))
+  :config
+  (setq cmake-integration-create-compile-commands-link nil)
   :bind (:map c++-mode-map
               ([S-f5] . cmake-integration-save-and-compile) ;; Ask for the target name and compile it
               ([f5] . cmake-integration-save-and-compile-last-target) ;; Recompile the last target
@@ -116,5 +120,9 @@
 
 
 ;; (global-set-key (kbd "C-z") popwin:keymap)
+
+(use-package rmsbolt
+  :config
+  (setq rmsbolt-automatic-recompile nil))
 
 (provide 'setup-compilation)
