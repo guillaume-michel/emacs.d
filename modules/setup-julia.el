@@ -14,7 +14,7 @@
   :ensure t
   :config
   (setq lsp-julia-package-dir nil
-        lsp-julia-default-environment "~/.julia/environments/v1.9"))
+        lsp-julia-default-environment "~/.julia/environments/v1.10"))
 
 (use-package flycheck-julia
   :config (add-hook 'flycheck-mode-hook #'flycheck-julia-setup))
