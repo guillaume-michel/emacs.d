@@ -257,4 +257,8 @@ point reaches the beginning or end of the buffer, stop there."
 (require 'org-tempo)
 
 
+(use-package pickle)
+
+(add-to-list 'auto-mode-alist '("\\.feature\\'" . pickle-mode))
+
 (provide 'setup-editing)
