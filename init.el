@@ -366,6 +366,8 @@
   ;;       '(:eval (format " Projectile[%s(%s)]"
   ;;                       (projectile-project-name))))
   (setq projectile-mode-line "Projectile")
+  (add-to-list 'projectile-other-file-alist '("h" "cpp" "c" "cc" "cu"))
+  (add-to-list 'projectile-other-file-alist '("cu" "h"))
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap
   ("C-c p" . projectile-command-map)
