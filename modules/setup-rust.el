@@ -35,7 +35,9 @@
 
 (defun my-lsp-rust-hook ()
   "Configure Rust backend for lsp"
-  (setq lsp-rust-analyzer-cargo-watch-command "clippy"
+  (setq lsp-rust-analyzer-server-command
+        (list (substring (shell-command-to-string "rustup which rust-analyzer") 0 -1))
+        lsp-rust-analyzer-cargo-watch-command "clippy"
         lsp-rust-analyzer-server-display-inlay-hints t
         lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial"
         lsp-rust-analyzer-display-chaining-hints t
