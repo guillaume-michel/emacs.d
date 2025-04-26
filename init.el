@@ -1,3 +1,5 @@
+;;; init.el -*- lexical-binding: t; -*-
+
 ;; ---------------- STARTUP SPEEDUP --------------------------------------------
 ;; The default is 800 kilobytes.  Measured in bytes.
 ;; set high threshold to boost startup
@@ -16,6 +18,11 @@
                      gcs-done)
             ;; reduce gc threshold to avoid freezes during GC
             (setq gc-cons-threshold (* 50 1000 1000))))
+
+;--------- shut up native compilation ----------------
+(when (native-comp-available-p)
+  (setq native-comp-async-report-warnings-errors 'silent) ; Emacs 28 with native compilation
+  (setq native-compile-prune-cache t)) ; Emacs 29
 
 ;; ------------------ VARIABLES -------------------------------
 (add-to-list 'load-path (expand-file-name "modules" user-emacs-directory))
@@ -38,11 +45,12 @@
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 ;; additional config for extra files management
-(setq backup-by-copying t
+(setq make-backup-files nil
+      backup-by-copying t
       delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2
-      version-control t)  ; use versioned backups
+      version-control nil)  ; never use versioned backups
 
 (message "Deleting old backup files...")
 (let ((week (* 60 60 24 7))
@@ -186,6 +194,23 @@
 
 ;; Theme
 (require 'setup-theme)
+
+(use-package popper
+  :ensure t ; or :straight t
+  :bind (("C-`"   . popper-toggle)
+         ("M-`"   . popper-cycle)
+         ("C-M-`" . popper-toggle-type))
+  :init
+  (setq popper-reference-buffers
+        '(help-mode
+          compilation-mode))
+  (popper-mode +1)
+  (popper-echo-mode +1)) ; For echo area hints
+
+
+;; (use-package treesit-auto
+;;   :config
+;;   (treesit-auto-add-to-auto-mode-alist 'all))
 
 ;; Stateful keymaps with Hydra
 (use-package hydra
@@ -341,6 +366,8 @@
   ;;       '(:eval (format " Projectile[%s(%s)]"
   ;;                       (projectile-project-name))))
   (setq projectile-mode-line "Projectile")
+  (add-to-list 'projectile-other-file-alist '("h" "cpp" "c" "cc" "cu"))
+  (add-to-list 'projectile-other-file-alist '("cu" "h"))
   :custom ((projectile-completion-system 'ivy))
   :bind-keymap
   ("C-c p" . projectile-command-map)
@@ -395,7 +422,7 @@
   :ensure t
   :bind (("C-M-y" . browse-kill-ring)))
 
-(use-package sqlite3)
+;;(use-package sqlite3)
 
 ;;(use-package emacsql)
 
