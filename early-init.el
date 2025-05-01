@@ -7,7 +7,7 @@
 
 (setq native-comp-async-report-warnings-errors nil)
 
-(setq debug-on-error t)
+(setq debug-on-error nil)
 
 ;; for LSP booster
 ;; lsp-mode will use plist instead of hash-table

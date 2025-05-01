@@ -25,6 +25,15 @@
 ;; Load the helper package for commands like `straight-x-clean-unused-repos'
 (require 'straight-x)
 
+(defmacro use-builtin-package (name &rest args)
+  "Forces `use-package' to use builtin package instead of using external one
+  NAME and ARGS are in `use-package'."
+  (declare (indent defun))
+  `(use-package ,name
+     :ensure nil
+     :straight (:type built-in)
+     ,@args))
+
 ;; (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 ;;                          ("org" . "https://orgmode.org/elpa/")
 ;;                          ("elpa" . "https://elpa.gnu.org/packages/")))

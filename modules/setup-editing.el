@@ -191,11 +191,11 @@ point reaches the beginning or end of the buffer, stop there."
 (use-package lua-mode
   :mode "\\.lua$")
 
-(use-package ox-reveal
-  :ensure ox-reveal
-  :config
-  (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js@3.8.0")
-  (setq org-reveal-mathjax t))
+;; (use-package ox-reveal
+;;   :ensure ox-reveal
+;;   :config
+;;   (setq org-reveal-root "https://cdn.jsdelivr.net/npm/reveal.js@3.8.0")
+;;   (setq org-reveal-mathjax t))
 
 (use-package prettier-js
   :hook (js-mode . prettier-js-mode))
@@ -235,7 +235,7 @@ point reaches the beginning or end of the buffer, stop there."
   )
 
 ;; Org-mode
-(use-package toc-org
+(use-builtin-package toc-org
     :commands toc-org-enable
     :init (add-hook 'org-mode-hook 'toc-org-enable))
 

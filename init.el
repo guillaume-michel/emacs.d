@@ -75,7 +75,7 @@
 (setq scroll-step 1) ;; keyboard scroll one line at a time
 
 ;; nice scrolling
-(setq scroll-margin 0
+(setq scroll-margin 10
       scroll-conservatively 100000
       scroll-preserve-screen-position 1)
 
@@ -140,7 +140,7 @@
 ;; which-key is a useful UI panel that appears
 ;; when you start pressing any key binding in Emacs
 ;; to offer you all possible completions for the prefix
-(use-package which-key
+(use-builtin-package which-key
   :init (which-key-mode)
   :diminish
   :config
@@ -179,6 +179,43 @@
   (popper-mode +1)
   (popper-echo-mode +1)) ; For echo area hints
 
+;;; WINDOW
+;; This section configures window management in Emacs, enhancing the way buffers
+;; are displayed for a more efficient workflow. The `window' use-package helps
+;; streamline how various buffers are shown, especially those related to help,
+;; diagnostics, and completion.
+(use-builtin-package window
+  :custom
+  (display-buffer-alist
+   '(
+     ;; ("\\*.*e?shell\\*"
+     ;;  (display-buffer-in-side-window)
+     ;;  (window-height . 0.25)
+     ;;  (side . bottom)
+     ;;  (slot . -1))
+
+     ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|[Hh]elp\\|Messages\\|Bookmark List\\|Ibuffer\\|Occur\\|eldoc.*\\)\\*"
+      (display-buffer-in-side-window)
+      (window-height . 0.25)
+      (side . bottom)
+      (slot . 0))
+
+     ;; Example configuration for the LSP help buffer,
+     ;; keeps it always on bottom using 25% of the available space:
+     ("\\*\\(lsp-help\\)\\*"
+      (display-buffer-in-side-window)
+      (window-height . 0.25)
+      (side . bottom)
+      (slot . 0))
+
+     ;; Configuration for displaying various diagnostic buffers on
+     ;; bottom 25%:
+     ("\\*\\(Flymake diagnostics\\|xref\\|ivy\\|Swiper\\|Completions\\)"
+      (display-buffer-in-side-window)
+      (window-height . 0.25)
+      (side . bottom)
+      (slot . 1))
+     )))
 
 ;; (use-package treesit-auto
 ;;   :config
@@ -259,7 +296,7 @@
   ([remap describe-key] . helpful-key))
 
 ;; setup buffers behavior
-(require 'setup-buffers)
+;; (require 'setup-buffers)
 
 ;; setup term
 (require 'setup-term)
@@ -372,7 +409,8 @@
 )
 
 ;; magit
-(use-package magit)
+(use-package magit
+  :ensure t)
 (general-define-key
  "C-x g" 'magit-status)
 
@@ -380,8 +418,8 @@
   :ensure t
   :after magit)
 
-(use-package forge
-  :after magit)
+;; (use-package forge
+;;   :after magit)
 
 ;; Google-this
 (use-package google-this
@@ -393,10 +431,6 @@
 (use-package browse-kill-ring
   :ensure t
   :bind (("C-M-y" . browse-kill-ring)))
-
-;;(use-package sqlite3)
-
-;;(use-package emacsql)
 
 (defun slime-style-init-command (port-filename _coding-system extra-args)
   "Return a string to initialize Lisp."
