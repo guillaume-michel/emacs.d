@@ -31,6 +31,10 @@
 ;;       kept-old-versions 2
 ;;       version-control nil)  ; never use versioned backups
 
+(setq create-lockfiles nil
+      make-backup-files nil
+      backup-inhibited t)
+
 ;; (message "Deleting old backup files...")
 ;; (let ((week (* 60 60 24 7))
 ;;       (current (float-time (current-time))))
