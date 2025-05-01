@@ -1,4 +1,4 @@
-(use-package eglot
+(use-builtin-package eglot
   :ensure t
     :defer t
     :hook ((mojo-mode . eglot-ensure))
