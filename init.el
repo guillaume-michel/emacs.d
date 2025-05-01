@@ -1,28 +1,7 @@
 ;;; init.el -*- lexical-binding: t; -*-
 
-;; ---------------- STARTUP SPEEDUP --------------------------------------------
-;; The default is 800 kilobytes.  Measured in bytes.
-;; set high threshold to boost startup
-(setq gc-cons-threshold (* 500 1000 1000))
-
 ;; Increase the number of bytes that are read by default from the process
 (setq read-process-output-max (* 10 1024 1024))
-
-;; Profile emacs startup & setup normal GC threshold
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "*** Emacs loaded in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract after-init-time before-init-time)))
-                     gcs-done)
-            ;; reduce gc threshold to avoid freezes during GC
-            (setq gc-cons-threshold (* 50 1000 1000))))
-
-;--------- shut up native compilation ----------------
-(when (native-comp-available-p)
-  (setq native-comp-async-report-warnings-errors 'silent) ; Emacs 28 with native compilation
-  (setq native-compile-prune-cache t)) ; Emacs 29
 
 ;; ------------------ VARIABLES -------------------------------
 (add-to-list 'load-path (expand-file-name "modules" user-emacs-directory))
@@ -33,34 +12,34 @@
 ;; ---------------- Keep .emacs.d clean ------------------------
 ;; NOTE: If you want to move everything out of the ~/.emacs.d folder
 ;; reliably, set `user-emacs-directory` before loading no-littering!
-(setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
-      url-history-file (expand-file-name "url/history" user-emacs-directory))
+;; (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
+;;       url-history-file (expand-file-name "url/history" user-emacs-directory))
 
-;; Use no-littering to automatically set common paths to the new user-emacs-directory
-(use-package no-littering)
+;; ;; Use no-littering to automatically set common paths to the new user-emacs-directory
+;; (use-package no-littering)
 
-;; no-littering doesn't set this by default so we must place
-;; auto save files in the same path as it uses for sessions
-(setq auto-save-file-name-transforms
-      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+;; ;; no-littering doesn't set this by default so we must place
+;; ;; auto save files in the same path as it uses for sessions
+;; (setq auto-save-file-name-transforms
+;;       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 ;; additional config for extra files management
-(setq make-backup-files nil
-      backup-by-copying t
-      delete-old-versions t
-      kept-new-versions 6
-      kept-old-versions 2
-      version-control nil)  ; never use versioned backups
+;; (setq make-backup-files nil
+;;       backup-by-copying t
+;;       delete-old-versions t
+;;       kept-new-versions 6
+;;       kept-old-versions 2
+;;       version-control nil)  ; never use versioned backups
 
-(message "Deleting old backup files...")
-(let ((week (* 60 60 24 7))
-      (current (float-time (current-time))))
-  (dolist (file (directory-files no-littering-var-directory t))
-    (when (and (backup-file-name-p file)
-               (> (- current (float-time (nth 5 (file-attributes file))))
-                  week))
-      (message "%s" file)
-      (delete-file file))))
+;; (message "Deleting old backup files...")
+;; (let ((week (* 60 60 24 7))
+;;       (current (float-time (current-time))))
+;;   (dolist (file (directory-files no-littering-var-directory t))
+;;     (when (and (backup-file-name-p file)
+;;                (> (- current (float-time (nth 5 (file-attributes file))))
+;;                   week))
+;;       (message "%s" file)
+;;       (delete-file file))))
 
 ;; Keep customization settings apart from ~/.emacs.d
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
@@ -76,22 +55,15 @@
 
 ;; ------------------- SANE SETTINGS ---------------------------
 
-;; Always load newest byte code
-(setq load-prefer-newer t)
-
 ;; warn when opening files bigger than 100MB
-(setq large-file-warning-threshold (* 100 1024 1024))
+(setq large-file-warning-threshold (* 50 1024 1024))
 
 (setq inhibit-startup-message t)
 
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; minimal view setup
-(scroll-bar-mode -1)        ; Disable visible scrollbar
-(tool-bar-mode -1)          ; Disable the toolbar
-(tooltip-mode -1)           ; Disable tooltips
 (set-fringe-mode 10)        ; Give some breathing room
-(menu-bar-mode -1)            ; Disable the menu bar
 
 ;; maximize frame
 (toggle-frame-maximized)
