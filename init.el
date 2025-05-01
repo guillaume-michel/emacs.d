@@ -353,13 +353,12 @@
   :hook (prog-mode . clean-aindent-mode))
 
 ;; Automatically clean whitespace created during current editing
-(use-package ws-butler
-  :diminish
-  :hook ((text-mode . ws-butler-mode)
-         (prog-mode . ws-butler-mode)))
-
-;; remove trailing whitespaces before saving
-;(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(use-builtin-package whitespace
+  :defer t
+  :hook (before-save-hook . whitespace-cleanup)
+  ;; if we wanna remove this hook at any time, eval:
+  ;; (remove-hook 'before-save-hook #'whitespace-cleanup)
+  )
 
 ;; Compilation
 (global-set-key (kbd "<f5>") (lambda ()
