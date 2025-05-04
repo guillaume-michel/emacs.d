@@ -95,64 +95,12 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
-;; Header completion
-(use-package company-c-headers
-  :ensure t
-  :config
-  (push 'company-c-headers company-backends))
-
-;; (use-package flycheck
-;;   :defer t
-;;   :hook (lsp-mode . flycheck-mode))
-
-;;; FLYMAKE
-;; Flymake is an on-the-fly syntax checking extension that provides real-time feedback
-;; about errors and warnings in your code as you write. This can greatly enhance your
-;; coding experience by catching issues early. The configuration below activates
-;; Flymake mode in programming buffers.
-;; (use-builtin-package flymake
-;;   :defer t
-;;   :hook (lsp-mode . flymake-mode)
-;;   :custom
-;;   (flymake-margin-indicators-string
-;;    '((error "!»" compilation-error)
-;;      (warning "»" compilation-warning)
-;;      (note "»" compilation-info))))
-
-
-;;; FLYMAKE
-(use-builtin-package flymake
+(use-package flycheck
   :defer t
-  :hook (prog-mode-hook . flymake-mode)
-  :bind (:map flymake-mode-map
-              ("M-n" . flymake-goto-next-error)
-              ("M-p" . flymake-goto-prev-error)
-              ("C-c ! n" . flymake-goto-next-error)
-              ("C-c ! p" . flymake-goto-prev-error)
-              ("C-c ! l" . flymake-show-buffer-diagnostics)
-              ("C-c ! t" . toggle-flymake-diagnostics-at-eol))
-  :custom
-  (flymake-show-diagnostics-at-end-of-line nil)
-  ;; (flymake-show-diagnostics-at-end-of-line 'short)
-  (flymake-indicator-type 'margins)
-  (flymake-margin-indicators-string
-   `((error "!" compilation-error)      ;; Alternatives: », E, W, i, !, ?)
-     (warning "?" compilation-warning)
-     (note "i" compilation-info)))
+  :hook (lsp-mode . flycheck-mode)
   :config
-  ;; Define the toggle function
-  (defun toggle-flymake-diagnostics-at-eol ()
-    "Toggle the display of Flymake diagnostics at the end of the line
-and restart Flymake to apply the changes."
-    (interactive)
-    (setq flymake-show-diagnostics-at-end-of-line
-          (not flymake-show-diagnostics-at-end-of-line))
-    (flymake-mode -1) ;; Disable Flymake
-    (flymake-mode 1)  ;; Re-enable Flymake
-    (message "Flymake diagnostics at end of line: %s"
-             (if flymake-show-diagnostics-at-end-of-line
-                 "Enabled" "Disabled"))))
-
+  ;; only check on save
+  (setq flycheck-check-syntax-automatically '(mode-enabled save)))
 
 ;; Yasnippet
 (use-package yasnippet
