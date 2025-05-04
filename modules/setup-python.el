@@ -6,13 +6,13 @@
   (lsp-deferred)
   (require 'dap-python))
 
-(add-hook 'python-mode-hook 'my-python-hook)
+(add-hook 'python-ts-mode-hook 'my-python-hook)
 
 (use-package lsp-pyright
   :ensure t
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp-deferred)))
+  :hook (python-ts-mode . (lambda ()
+                            (require 'lsp-pyright)
+                            (lsp-deferred)))
   :config
   (setq lsp-pyright-use-library-code-for-types t) ;; set this to nil if getting too many false positive type errors
   (setq lsp-pyright-stub-path (concat (getenv "HOME") "/externals/python-type-stubs"))

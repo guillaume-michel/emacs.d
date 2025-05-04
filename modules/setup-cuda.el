@@ -5,8 +5,8 @@
 
 ;; (add-to-list 'auto-mode-alist '("\\.cuh\\'" . cuda-mode))
 
-(add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.cuh\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.cuh\\'" . c++-ts-mode))
 
 
 (provide 'setup-cuda)

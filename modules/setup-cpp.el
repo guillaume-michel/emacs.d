@@ -9,8 +9,8 @@
          (c-mode-common . google-make-newline-indent)))
 
 ;; adjust google style to respect my tab-width
-(add-hook 'c++-mode-hook (lambda ()
-                           (setq c-basic-offset tab-width)))
+(add-hook 'c++-ts-mode-hook (lambda ()
+                              (setq c-basic-offset tab-width)))
 
 ;; (use-package clang-format
 ;;   :after (s)
@@ -56,16 +56,11 @@
 ;;                                                 (equal "Mozilla" base-style)
 ;;                                                 (equal "WebKit" base-style)) (setq-local indent-tabs-mode nil))))))))))
 
-
-(use-package modern-cpp-font-lock
-  :ensure t
-  :hook (c++-mode . modern-c++-font-lock-mode))
-
-(add-to-list 'auto-mode-alist '("\\.ipp\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.ipp\\'" . c++-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-ts-mode))
 
 ;; LSP with C++
-(add-hook 'c++-mode-hook 'lsp-deferred)
+(add-hook 'c++-ts-mode-hook 'lsp-deferred)
 
 (defun my-lsp-c++-hook ()
   "Configure clangd as C++ backend for lsp"
@@ -74,8 +69,8 @@
 
 (add-hook 'lsp-mode 'my-lsp-c++-hook)
 
-(add-hook 'c++-mode-hook (lambda ()
-                           (require 'dap-cpptools)))
+(add-hook 'c++-ts-mode-hook (lambda ()
+                              (require 'dap-cpptools)))
 ;; Use clangcheck for flycheck in C++ mode
 (defun my-select-clangcheck-for-checker ()
   "Select clang-check for flycheck's checker."

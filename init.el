@@ -232,6 +232,9 @@
 ;; setup general editing
 (require 'setup-editing)
 
+;; enable tree-sitter
+(require 'setup-treesitter)
+
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)

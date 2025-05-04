@@ -24,7 +24,7 @@
                    :repo "guillaume-michel/cmake-integration"))
   :config
   (setq cmake-integration-create-compile-commands-link nil)
-  :bind (:map c++-mode-map
+  :bind (:map c++-ts-mode-map
               ([S-f5] . cmake-integration-save-and-compile) ;; Ask for the target name and compile it
               ([f5] . cmake-integration-save-and-compile-last-target) ;; Recompile the last target
               ([S-f12] . cmake-integration-run-last-target-with-arguments) ;; Ask for command line parameters to run the program
@@ -33,9 +33,9 @@
               ([f7] . cmake-integration-cmake-reconfigure) ;; Call CMake with the last chosen preset
               ))
 
-(add-hook 'c++-mode-hook
+(add-hook 'c++-ts-mode-hook
       (lambda ()
-        (define-key c++-mode-map (kbd "<f6>") 'kill-compilation)))
+        (define-key c++-ts-mode-map (kbd "<f6>") 'kill-compilation)))
 
 (add-hook 'c-mode-hook
       (lambda ()
