@@ -76,6 +76,8 @@
 ;; Makes Emacs vertical divisor the symbol │ instead of |.
 (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
 
+(xterm-mouse-mode 1)                            ;; Enable mouse support in terminal mode.
+
 ;; maximize frame
 (toggle-frame-maximized)
 
