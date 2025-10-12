@@ -30,8 +30,18 @@
   (initial-scratch-message "")                    ;; Clear the initial message in the *scratch* buffer.
   (ispell-dictionary "en_US")                     ;; Set the default dictionary for spell checking.
   (make-backup-files nil)                         ;; Disable creation of backup files.
-  (pixel-scroll-precision-mode t)                 ;; Enable precise pixel scrolling.
-  (pixel-scroll-precision-use-momentum nil)       ;; Disable momentum scrolling for pixel precision.
+  ;; (pixel-scroll-precision-mode t)                 ;; Enable precise pixel scrolling.
+  ;; (pixel-scroll-precision-use-momentum nil)       ;; Disable momentum scrolling for pixel precision.
+  ;; scroll one line at a time (less "jumpy" than defaults)
+  (mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+  (mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+  (mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+  (scroll-step 1) ;; keyboard scroll one line at a time
+  ;; nice scrolling
+  (scroll-margin 10)
+  (scroll-conservatively 100000)
+  (scroll-preserve-screen-position 1)
+
   (ring-bell-function 'ignore)                    ;; Disable the audible bell.
   (split-width-threshold 300)                     ;; Prevent automatic window splitting if the window width exceeds 300 pixels.
   (switch-to-buffer-obey-display-actions t)       ;; Make buffer switching respect display actions.
@@ -138,12 +148,25 @@
 
      ;; Configuration for displaying various diagnostic buffers on
      ;; bottom 25%:
-     ("\\*\\(Flymake diagnostics\\|xref\\|ivy\\|Swiper\\|Completions\\)"
+     ("\\*\\(Flymake diagnostics\\|Flycheck errors\\|xref\\|ivy\\|Swiper\\|Completions\\)"
       (display-buffer-in-side-window)
       (window-height . 0.25)
       (side . bottom)
       (slot . 1))
      )))
+
+;;; DIRED
+(use-builtin-package dired
+  :custom
+  (dired-listing-switches "-lah --group-directories-first")  ;; Display files in a human-readable format and group directories first.
+  (dired-dwim-target t)                                      ;; Enable "do what I mean" for target directories.
+  (dired-kill-when-opening-new-dired-buffer t))               ;; Close the previous buffer when opening a new `dired' instance.
+
+;;; WHICH-KEY
+(use-builtin-package which-key
+  :defer t        ;; Defer loading Which-Key until after init.
+  :hook
+  (after-init . which-key-mode)) ;; Enable which-key mode after initialization.
 
 ;; ------------ MAC SPECIFIC WORKAROUND ------------------------
 (use-package exec-path-from-shell
@@ -155,18 +178,7 @@
 
 ;; ------------------- SANE SETTINGS ---------------------------
 
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-;; ;; scroll one line at a time (less "jumpy" than defaults)
-;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-;; (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-;; (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-;; (setq scroll-step 1) ;; keyboard scroll one line at a time
-
-;; ;; nice scrolling
-;; (setq scroll-margin 10
-;;       scroll-conservatively 100000
-;;       scroll-preserve-screen-position 1)
+;;(defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; ;; Enable line numbers for some modes
 ;; (dolist (mode '(text-mode-hook
@@ -211,15 +223,6 @@
 
 (add-hook 'term-mode-hook #'eterm-256color-mode)
 
-;; which-key is a useful UI panel that appears
-;; when you start pressing any key binding in Emacs
-;; to offer you all possible completions for the prefix
-(use-builtin-package which-key
-  :init (which-key-mode)
-  :diminish
-  :config
-  (setq which-key-idle-delay 0.3))
-
 (use-package all-the-icons
   :if (display-graphic-p)
   :commands all-the-icons-install-fonts
@@ -235,7 +238,7 @@
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 15)
            (doom-modeline-buffer-file-name-style 'buffer-name)
-           (doom-modeline-buffer-encoding nil)
+           (doom-modeline-buffer-encoding t)
            (doom-modeline-vcs-max-length 20)))
 
 ;; Theme
@@ -252,44 +255,6 @@
           compilation-mode))
   (popper-mode +1)
   (popper-echo-mode +1)) ; For echo area hints
-
-;;; WINDOW
-;; This section configures window management in Emacs, enhancing the way buffers
-;; are displayed for a more efficient workflow. The `window' use-package helps
-;; streamline how various buffers are shown, especially those related to help,
-;; diagnostics, and completion.
-(use-builtin-package window
-  :custom
-  (display-buffer-alist
-   '(
-     ;; ("\\*.*e?shell\\*"
-     ;;  (display-buffer-in-side-window)
-     ;;  (window-height . 0.25)
-     ;;  (side . bottom)
-     ;;  (slot . -1))
-
-     ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|[Hh]elp\\|Messages\\|Bookmark List\\|Ibuffer\\|Occur\\|eldoc.*\\)\\*"
-      (display-buffer-in-side-window)
-      (window-height . 0.25)
-      (side . bottom)
-      (slot . 0))
-
-     ;; Example configuration for the LSP help buffer,
-     ;; keeps it always on bottom using 25% of the available space:
-     ("\\*\\(lsp-help\\)\\*"
-      (display-buffer-in-side-window)
-      (window-height . 0.25)
-      (side . bottom)
-      (slot . 0))
-
-     ;; Configuration for displaying various diagnostic buffers on
-     ;; bottom 25%:
-     ("\\*\\(Flymake diagnostics\\|xref\\|ivy\\|Swiper\\|Completions\\)"
-      (display-buffer-in-side-window)
-      (window-height . 0.25)
-      (side . bottom)
-      (slot . 1))
-     )))
 
 ;; (use-package treesit-auto
 ;;   :config
