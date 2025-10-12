@@ -1,4 +1,8 @@
-;;; init.el -*- lexical-binding: t; -*-
+;;; init.el --- Emacs Config -*- lexical-binding: t; -*-
+
+;;; Commentary:
+
+;;; Code:
 
 ;; Increase the number of bytes that are read by default from the process
 (setq read-process-output-max (* 10 1024 1024))
@@ -68,6 +72,9 @@
 
 ;; minimal view setup
 (set-fringe-mode 10)        ; Give some breathing room
+
+;; Makes Emacs vertical divisor the symbol │ instead of |.
+(set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
 
 ;; maximize frame
 (toggle-frame-maximized)
