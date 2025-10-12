@@ -13,45 +13,103 @@
 ;; ------------------- INIT PACKAGES --------------------------
 (require 'setup-packages)
 
-;; ---------------- Keep .emacs.d clean ------------------------
-;; NOTE: If you want to move everything out of the ~/.emacs.d folder
-;; reliably, set `user-emacs-directory` before loading no-littering!
-;; (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
-;;       url-history-file (expand-file-name "url/history" user-emacs-directory))
+;;; EMACS
+;;  This is biggest one. Keep going, plugins (oops, I mean packages) will be shorter :)
+(use-builtin-package emacs
+  :custom                                         ;; Set custom variables to configure Emacs behavior.
+  (auto-save-default nil)                         ;; Disable automatic saving of buffers.
+  (column-number-mode t)                          ;; Display the column number in the mode line.
+  (create-lockfiles nil)                          ;; Prevent the creation of lock files when editing.
+  (delete-selection-mode 1)                       ;; Enable replacing selected text with typed text.
+  (display-line-numbers-type 'relative)           ;; Use relative line numbering in programming modes.
+  (display-line-numbers-width 4)                  ;; minimum line number column width
+  (global-auto-revert-non-file-buffers t)         ;; Automatically refresh non-file buffers.
+  (history-length 25)                             ;; Set the length of the command history.
+  (indent-tabs-mode nil)                          ;; Disable the use of tabs for indentation (use spaces instead).
+  (inhibit-startup-message t)                     ;; Disable the startup message when Emacs launches.
+  (initial-scratch-message "")                    ;; Clear the initial message in the *scratch* buffer.
+  (ispell-dictionary "en_US")                     ;; Set the default dictionary for spell checking.
+  (make-backup-files nil)                         ;; Disable creation of backup files.
+  (pixel-scroll-precision-mode t)                 ;; Enable precise pixel scrolling.
+  (pixel-scroll-precision-use-momentum nil)       ;; Disable momentum scrolling for pixel precision.
+  (ring-bell-function 'ignore)                    ;; Disable the audible bell.
+  (split-width-threshold 300)                     ;; Prevent automatic window splitting if the window width exceeds 300 pixels.
+  (switch-to-buffer-obey-display-actions t)       ;; Make buffer switching respect display actions.
+  (tab-always-indent 'complete)                   ;; Make the TAB key complete text instead of just indenting.
+  (tab-width 4)                                   ;; Set the tab width to 4 spaces.
+  (treesit-font-lock-level 4)                     ;; Use advanced font locking for Treesit mode.
+  (truncate-lines t)                              ;; Enable line truncation to avoid wrapping long lines.
+  (use-dialog-box nil)                            ;; Disable dialog boxes in favor of minibuffer prompts.
+  (use-short-answers t)                           ;; Use short answers in prompts for quicker responses (y instead of yes)
+  (warning-minimum-level :emergency)              ;; Set the minimum level of warnings to display.
+  (large-file-warning-threshold (* 50 1024 1024)) ;; warn when opening files bigger than the threshold
+  ;; Copy/paste stuff (Do NOT work on terminal Emacs)
+  (select-enable-clipboard t)
+  (select-enable-primary t)
+  (save-interprogram-paste-before-kill t)
+  (mouse-yank-at-point t)
 
-;; ;; Use no-littering to automatically set common paths to the new user-emacs-directory
-;; (use-package no-littering)
+  :hook                                           ;; Add hooks to enable specific features in certain modes.
+  (prog-mode . display-line-numbers-mode)         ;; Enable line numbers in programming modes.
+  (text-mode . display-line-numbers-mode)         ;; Enable line numbers in text modes.
+  (conf-mode . display-line-numbers-mode)         ;; Enable line numbers in conf modes.
+  (org-mode . (lambda () (display-line-numbers-mode 0)))         ;; Disable line numbers in org mode.
 
-;; ;; no-littering doesn't set this by default so we must place
-;; ;; auto save files in the same path as it uses for sessions
-;; (setq auto-save-file-name-transforms
-;;       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+  :config
+  ;; Configure font settings based on the operating system.
+  ;; Ok, this kickstart is meant to be used on the terminal, not on GUI.
+  ;; But without this, I fear you could start Graphical Emacs and be sad :(
+  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 90)
+  ;; before:
+  ;; (set-face-attribute 'default nil :height 90)
+  ;; (set-face-attribute 'fixed-pitch nil :height 90)
+  ;; (set-face-attribute 'variable-pitch nil :height 90 :weight 'regular)
 
-;; additional config for extra files management
-;; (setq make-backup-files nil
-;;       backup-by-copying t
-;;       delete-old-versions t
-;;       kept-new-versions 6
-;;       kept-old-versions 2
-;;       version-control nil)  ; never use versioned backups
+  ;; Save manual customizations to a separate file instead of cluttering `init.el'.
+  ;; You can M-x customize, M-x customize-group, or M-x customize-themes, etc.
+  ;; The saves you do manually using the Emacs interface would overwrite this file.
+  ;; The following makes sure those customizations are in a separate file.
+  (setq custom-file (locate-user-emacs-file "custom.el")) ;; Specify the custom file path.
+  (load custom-file 'noerror 'nomessage)                  ;; Load the custom file quietly, ignoring errors.
 
-(setq create-lockfiles nil
-      make-backup-files nil
-      backup-inhibited t)
+  ;; Makes Emacs vertical divisor the symbol │ instead of |.
+  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
 
-;; (message "Deleting old backup files...")
-;; (let ((week (* 60 60 24 7))
-;;       (current (float-time (current-time))))
-;;   (dolist (file (directory-files no-littering-var-directory t))
-;;     (when (and (backup-file-name-p file)
-;;                (> (- current (float-time (nth 5 (file-attributes file))))
-;;                   week))
-;;       (message "%s" file)
-;;       (delete-file file))))
+  :init                        ;; Initialization settings that apply before the package is loaded.
+  (global-hl-line-mode 1)                         ;; Enable highlight of the current line
+  (set-face-background 'hl-line "#202020")        ;; more discret background for highlighted line
+  (set-face-foreground 'highlight nil)            ;; more discret
+  (global-auto-revert-mode 1)                     ;; Enable global auto-revert mode to keep buffers up to date with their corresponding files.
+  (recentf-mode 1)                                ;; Enable tracking of recently opened files.
+  (savehist-mode 1)                               ;; Enable saving of command history.
+  (save-place-mode 1)                             ;; Enable saving the place in files for easier return.
+  (winner-mode 1)                                 ;; Enable winner mode to easily undo window configuration changes.
+  (xterm-mouse-mode 1)                            ;; Enable mouse support in terminal mode.
+  (file-name-shadow-mode 1)                       ;; Enable shadowing of filenames for clarity.
+  (set-fringe-mode 10)                            ;; Give some breathing room
+  (toggle-frame-maximized)                        ;; maximize frame on startup
 
-;; Keep customization settings apart from ~/.emacs.d
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file 'noerror)
+  ;; this is to use shift + arrow keys to switch between windows
+  (windmove-default-keybindings)
+
+  ;; Set the default coding system for files to UTF-8.
+  (modify-coding-system-alist 'file "" 'utf-8)
+
+  ;; Add a hook to run code after Emacs has fully initialized.
+  (add-hook 'after-init-hook
+            (lambda ()
+              (message "Emacs has fully loaded. This code runs after startup.")
+
+              ;; Insert a welcome message in the *scratch* buffer displaying loading time and activated packages.
+              (with-current-buffer (get-buffer-create "*scratch*")
+                (insert (format
+                         ";;    Welcome to Emacs!
+;;
+;;    Loading time : %s
+;;    Packages     : %s
+"
+                         (emacs-init-time)
+                         (length (hash-table-keys straight--recipe-cache))))))))
 
 ;; ------------ MAC SPECIFIC WORKAROUND ------------------------
 (use-package exec-path-from-shell
@@ -63,61 +121,34 @@
 
 ;; ------------------- SANE SETTINGS ---------------------------
 
-;; warn when opening files bigger than 100MB
-(setq large-file-warning-threshold (* 50 1024 1024))
-
-(setq inhibit-startup-message t)
-
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; minimal view setup
-(set-fringe-mode 10)        ; Give some breathing room
+;; ;; scroll one line at a time (less "jumpy" than defaults)
+;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+;; (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+;; (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+;; (setq scroll-step 1) ;; keyboard scroll one line at a time
 
-;; Makes Emacs vertical divisor the symbol │ instead of |.
-(set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+;; ;; nice scrolling
+;; (setq scroll-margin 10
+;;       scroll-conservatively 100000
+;;       scroll-preserve-screen-position 1)
 
-(xterm-mouse-mode 1)                            ;; Enable mouse support in terminal mode.
+;; ;; Enable line numbers for some modes
+;; (dolist (mode '(text-mode-hook
+;;                 prog-mode-hook
+;;                 conf-mode-hook))
+;;   (add-hook mode (lambda () (display-line-numbers-mode 1))))
 
-;; maximize frame
-(toggle-frame-maximized)
+;; ;; Override some modes which derive from the above
+;; (dolist (mode '(org-mode-hook))
+;;   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-;; scroll one line at a time (less "jumpy" than defaults)
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-(setq scroll-step 1) ;; keyboard scroll one line at a time
-
-;; nice scrolling
-(setq scroll-margin 10
-      scroll-conservatively 100000
-      scroll-preserve-screen-position 1)
-
-;; this is to use shift + arrow keys to switch between windows
-(windmove-default-keybindings)
-
-(global-auto-revert-mode 1)
-
-;; show column number in modeline
-(column-number-mode)
-
-;; minimum line number column width
-(setq-default display-line-numbers-width 4)
-
-;; Enable line numbers for some modes
-(dolist (mode '(text-mode-hook
-                prog-mode-hook
-                conf-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 1))))
-
-;; Override some modes which derive from the above
-(dolist (mode '(org-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-;; Copy/paste stuff
-(setq select-enable-clipboard t
-      select-enable-primary t
-      save-interprogram-paste-before-kill t
-      mouse-yank-at-point t)
+;; ;; Copy/paste stuff
+;; (setq select-enable-clipboard t
+;;       select-enable-primary t
+;;       save-interprogram-paste-before-kill t
+;;       mouse-yank-at-point t)
 
 ;; ----------------- KEY BINDINGS --------------------
 ;; general is used for easy keybinding configuration
@@ -137,10 +168,6 @@
   )
 
 ;; ------------------ UI Configuration ----------------
-;; set font size
-(set-face-attribute 'default nil :height 90)
-(set-face-attribute 'fixed-pitch nil :height 90)
-(set-face-attribute 'variable-pitch nil :height 90 :weight 'regular)
 
 ;; for compilation buffer
 (use-package ansi-color)
@@ -353,13 +380,6 @@
 ;; show unncessary whitespace that can mess up your diff
 (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
 
-;; use space to indent by default
-(setq-default indent-tabs-mode nil)
-
-;; set appearance of a tab that is represented by 4 spaces
-(setq-default tab-width 4)
-;;(setq tab-stop-list (number-sequence 4 200 4))
-
 ;; Package: clean-aindent-mode
 (use-package clean-aindent-mode
   :diminish
@@ -404,10 +424,6 @@
 
 ;; compilation helpers
 (require 'setup-compilation)
-
-;;; winner mode
-(when (fboundp 'winner-mode)
-  (winner-mode 1))
 
 ;; Bazel
 ;; (use-package bazel-mode)

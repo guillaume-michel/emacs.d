@@ -71,30 +71,6 @@ point reaches the beginning or end of the buffer, stop there."
   (setq sp-highlight-wrap-tag-overlay nil)
   (sp-use-paredit-bindings))
 
-;; highlight the current line
-(global-hl-line-mode 1)
-(set-face-background 'hl-line "#202020")
-(set-face-foreground 'highlight nil)
-
-;; ;; folding
-;; (add-hook 'c-mode-common-hook   'hs-minor-mode)
-;; (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
-;; (add-hook 'java-mode-hook       'hs-minor-mode)
-;; (add-hook 'lisp-mode-hook       'hs-minor-mode)
-;; (add-hook 'perl-mode-hook       'hs-minor-mode)
-;; (add-hook 'sh-mode-hook         'hs-minor-mode)
-;; (add-hook 'python-mode-hook     'hs-minor-mode)
-;; (add-hook 'latex-mode-hook      'hs-minor-mode)
-;; (add-hook 'LaTeX-mode-hook      'hs-minor-mode)
-;; (add-hook 'lua-mode-hook        'hs-minor-mode)
-
-;; (defun my-toggle-hiding ()
-;;   "custom toggle folding"
-;;   (interactive)
-;;   (hs-toggle-hidding))
-
-;; (global-set-key (kbd "<f9>") (lambda () (interactive) (hs-toggle-hiding)))
-
 (use-package origami
   :hook (prog-mode . origami-mode)
   :config
@@ -103,12 +79,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package lsp-origami
   :hook (lsp-after-open . lsp-origami-try-enable))
-
-;; disable bell
-(setq visible-bell 1)
-
-;; disable alarm completely
-(setq ring-bell-function 'ignore)
 
 ;; Package zygospore
 (use-package zygospore
