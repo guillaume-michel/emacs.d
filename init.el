@@ -176,26 +176,6 @@
   (setq exec-path-from-shell-variables '("PATH" "PYTHONPATH"))
   (exec-path-from-shell-initialize))
 
-;; ------------------- SANE SETTINGS ---------------------------
-
-;;(defalias 'yes-or-no-p 'y-or-n-p)
-
-;; ;; Enable line numbers for some modes
-;; (dolist (mode '(text-mode-hook
-;;                 prog-mode-hook
-;;                 conf-mode-hook))
-;;   (add-hook mode (lambda () (display-line-numbers-mode 1))))
-
-;; ;; Override some modes which derive from the above
-;; (dolist (mode '(org-mode-hook))
-;;   (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
-;; ;; Copy/paste stuff
-;; (setq select-enable-clipboard t
-;;       select-enable-primary t
-;;       save-interprogram-paste-before-kill t
-;;       mouse-yank-at-point t)
-
 ;; ----------------- KEY BINDINGS --------------------
 ;; general is used for easy keybinding configuration
 ;; that integrates well with which-key
