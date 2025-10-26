@@ -966,10 +966,11 @@ point reaches the beginning or end of the buffer, stop there."
       (lambda ()
         (define-key c-mode-map (kbd "<f6>") 'kill-compilation)))
 
+;; NOTE(gmichel): This messes up popper placement for the *compilation* buffer at the bottom of the frame
 ;; assure the compilation buffer is only opened once when multiple frames are open
-(add-to-list 'display-buffer-alist
-             '("\\*compilation\\*" . (display-buffer-reuse-window
-                                      . ((reusable-frames . t)))))
+;; (add-to-list 'display-buffer-alist
+;;              '("\\*compilation\\*" . (display-buffer-reuse-window
+;;                                       . ((reusable-frames . t)))))
 
 ;; enable color in compilation buffer
 (defun colorize-compilation-buffer ()
