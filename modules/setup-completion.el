@@ -38,25 +38,15 @@
 (use-package lsp-mode
   ;;:commands (lsp lsp-deferred)
   :hook (lsp-mode . efs/lsp-mode-setup)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  (setq lsp-enable-indentation t
-        lsp-semantic-tokens-enable nil
-        lsp-auto-guess-root t
-        lsp-prefer-flymake nil)
+  :custom
+  (lsp-keymap-prefix "C-c l")                           ;; Set the prefix for LSP commands.
+  (lsp-enable-file-watchers nil)                        ;; Disable file watchers.
+  (lsp-enable-indentation t)                            ;; Enable indentation.
+  (lsp-semantic-tokens-enable nil)                      ;; Disable semantic tokens.
+  (lsp-auto-guess-root t)
+  (lsp-prefer-flymake nil)
   :config
   (lsp-enable-which-key-integration t)
-  ;; (cl-defmethod lsp-clients-extract-signature-on-hover (contents (_server-id (eql rust-analyzer)))
-  ;;   (-let* (((&hash "value") contents)
-  ;;           (groups (--partition-by (s-blank? it) (s-lines value)))
-  ;;           (sig_group (if (s-equals? "```rust" (car (-third-item groups)))
-  ;;                          (-third-item groups)
-  ;;                        (car groups)))
-  ;;           (sig (--> sig_group
-  ;;                     (--drop-while (s-equals? "```rust" it) it)
-  ;;                     (--take-while (not (s-equals? "```" it)) it)
-  ;;                     (s-join "" it))))
-  ;;     (lsp--render-element (concat "```rust\n" sig "\n```"))))
   )
 
 (use-package lsp-ui
@@ -95,15 +85,12 @@
 (use-package company-box
   :hook (company-mode . company-box-mode))
 
-;; Header completion
-(use-package company-c-headers
-  :ensure t
-  :config
-  (push 'company-c-headers company-backends))
-
 (use-package flycheck
   :defer t
-  :hook (lsp-mode . flycheck-mode))
+  :hook (lsp-mode . flycheck-mode)
+  :config
+  ;; only check on save
+  (setq flycheck-check-syntax-automatically '(mode-enabled save)))
 
 ;; Yasnippet
 (use-package yasnippet
@@ -112,7 +99,7 @@
   :init (add-hook 'after-init-hook 'yas-global-mode)
   :config
   (setq yas-snippet-dirs
-        '("~/.emacs.d/snippets"))
+        '("~/.config/emacs/snippets"))
   (define-key yas-minor-mode-map (kbd "<tab>") nil)
   (define-key yas-minor-mode-map (kbd "TAB") nil)
   (define-key yas-minor-mode-map (kbd "SPC") yas-maybe-expand)
