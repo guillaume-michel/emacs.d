@@ -996,9 +996,6 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t
   :after magit)
 
-;; (use-package forge
-;;   :after magit)
-
 ;; Google-this
 (use-package google-this
   :ensure t
