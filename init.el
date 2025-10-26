@@ -874,7 +874,8 @@ point reaches the beginning or end of the buffer, stop there."
 ;; setup protobuf support
 (use-package protobuf-mode :ensure t)
 
-(global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
+;; NOTE(gmichel): seems good without it. remove it?
+;;(global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
 
 ;; activate whitespace-mode to view all whitespace characters
 (global-set-key (kbd "C-c w") 'whitespace-mode)
