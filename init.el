@@ -883,7 +883,9 @@ point reaches the beginning or end of the buffer, stop there."
 ;; show unncessary whitespace that can mess up your diff
 (add-hook 'prog-mode-hook (lambda () (interactive) (setq show-trailing-whitespace 1)))
 
-;; Package: clean-aindent-mode
+;; NOTE(gmichel): cleanup auto indent whitespace
+;; it is still needed as of 20251026
+;; see https://www.emacswiki.org/emacs/CleanAutoIndent
 (use-package clean-aindent-mode
   :diminish
   :hook (prog-mode . clean-aindent-mode))

@@ -17,7 +17,8 @@ rm -rf \
    history \
    places \
    recentf \
-   transient
+   transient \
+   .dap-breakpoints
 
 # cleanup straight
 rm -rf straight/build-cache.el straight/build
