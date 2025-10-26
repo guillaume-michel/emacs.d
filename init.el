@@ -48,7 +48,7 @@
   (tab-always-indent 'complete)                   ;; Make the TAB key complete text instead of just indenting.
   (tab-width 4)                                   ;; Set the tab width to 4 spaces.
   (treesit-font-lock-level 4)                     ;; Use advanced font locking for Treesit mode.
-  (truncate-lines t)                              ;; Enable line truncation to avoid wrapping long lines.
+  (truncate-lines nil)                            ;; Disable line truncation to avoid wrapping long lines.
   (use-dialog-box nil)                            ;; Disable dialog boxes in favor of minibuffer prompts.
   (use-short-answers t)                           ;; Use short answers in prompts for quicker responses (y instead of yes)
   (warning-minimum-level :emergency)              ;; Set the minimum level of warnings to display.
@@ -167,6 +167,18 @@
   :defer t        ;; Defer loading Which-Key until after init.
   :hook
   (after-init . which-key-mode)) ;; Enable which-key mode after initialization.
+
+;;; XCLIP
+;; `xclip' is an Emacs package that integrates the X Window System clipboard
+;; with Emacs. It allows seamless copying and pasting between Emacs and other
+;; applications using the clipboard. When `xclip' is enabled, any text copied
+;; in Emacs can be pasted in other applications, and vice versa, providing a
+;; smooth workflow when working across multiple environments.
+(use-package xclip
+  :ensure t
+  :defer t
+  :hook
+  (after-init . xclip-mode))     ;; Enable xclip mode after initialization.
 
 ;; ------------ MAC SPECIFIC WORKAROUND ------------------------
 (use-package exec-path-from-shell
