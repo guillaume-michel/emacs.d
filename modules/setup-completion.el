@@ -99,24 +99,10 @@
   :init (add-hook 'after-init-hook 'yas-global-mode)
   :config
   (setq yas-snippet-dirs
-        '("~/.config/emacs/snippets"))
+        `(,(expand-file-name "snippets" user-emacs-directory)))
   (define-key yas-minor-mode-map (kbd "<tab>") nil)
   (define-key yas-minor-mode-map (kbd "TAB") nil)
   (define-key yas-minor-mode-map (kbd "SPC") yas-maybe-expand)
   (define-key yas-minor-mode-map (kbd "C-c y") #'yas-expand))
-
-;; (use-package lsp-sonarlint
-;;   :custom
-;;   ;; Allow sonarlint to download and unzip the official VSCode extension
-;;   ;; If nil, you'll have to do that yourself. See also `lsp-sonarlint-download'
-;;   ;; `lsp-sonarlint-download-url' and `lsp-sonarlint-download-dir'
-;;   (lsp-sonarlint-auto-download t)
-
-;;   ;; Choose which analyzers you want enabled. By default all are enabled
-;;   ;; See command `lsp-sonarlint-available-analyzers' for the full list.
-;;   (lsp-sonarlint-enabled-analyzers '("cfamily" "python"))
-
-;;   (lsp-sonarlint-cfamily-compile-commands-path "${workspaceFolder}/build/compile_commands.json"))
-
 
 (provide 'setup-completion)

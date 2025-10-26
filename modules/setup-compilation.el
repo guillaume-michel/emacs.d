@@ -53,9 +53,4 @@
 
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
-;; Godbolt inside Emacs!
-(use-package rmsbolt
-  :config
-  (setq rmsbolt-automatic-recompile nil))
-
 (provide 'setup-compilation)

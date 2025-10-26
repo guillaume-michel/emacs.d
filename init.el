@@ -314,8 +314,6 @@
   :init
   (setq ivy-flx-limit 10000))
 
-(use-package wgrep)
-
 (use-package helpful
   :custom
   (counsel-describe-function-function #'helpful-callable)
@@ -330,7 +328,10 @@
 ;; (require 'setup-buffers)
 
 ;; setup term
-(require 'setup-term)
+(use-package vterm
+    :ensure t
+    :custom
+    (vterm-always-compile-module t))
 
 ;; setup code completion
 (require 'setup-completion)
@@ -347,21 +348,8 @@
 ;; setup rust language support
 (require 'setup-rust)
 
-;; setup julia language support
-(require 'setup-julia)
-
-;; setup cuda language support
-(require 'setup-cuda)
-
 ;; setup protobuf support
 (require 'setup-protobuf)
-
-;; setup mojo language support
-(require 'mojo-mode)
-(require 'setup-mojo)
-
-;; setup zig
-(require 'setup-zig)
 
 (global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
 
@@ -415,9 +403,6 @@
 
 ;; compilation helpers
 (require 'setup-compilation)
-
-;; Bazel
-;; (use-package bazel-mode)
 
 ;; Cap'n Proto syntax highlighting
 (use-package capnp-mode
