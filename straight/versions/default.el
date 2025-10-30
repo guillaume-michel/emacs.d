@@ -9,6 +9,7 @@
  ("capnproto" . "164284a476eee4bfbcf7cce2a9a82fb156504210")
  ("cargo.el" . "7f8466063381eed05d4e222ce822b1dd44e3bf17")
  ("cfrs" . "981bddb3fb9fd9c58aed182e352975bd10ad74c8")
+ ("clang-format" . "a099177b5cd5060597d454e4c1ffdc96b92ba985")
  ("clean-aindent-mode" . "a97bcae8f43a9ff64e95473e4ef0d8bafe829211")
  ("cmake" . "317d846fe7bf5c990a7ffd6099c3cc817da7a117")
  ("cmake-font-lock" . "a6038e916bcca807ae695f7d7e5c300c3f38f415")

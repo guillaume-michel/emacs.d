@@ -828,6 +828,17 @@ point reaches the beginning or end of the buffer, stop there."
 ;; LSP with C++
 (add-hook 'c++-mode-hook 'lsp-deferred)
 
+(use-package clang-format
+  :ensure t
+  :hook
+  (c++-mode . my/c++-format-on-save)
+  (c-mode   . my/c++-format-on-save)
+  :config
+  (defun my/c++-format-on-save ()
+    ;; Run clang-format before saving, but only in this buffer
+    (add-hook 'before-save-hook #'clang-format-buffer nil t)))
+
+
 (defun my-lsp-c++-hook ()
   "Configure clangd as C++ backend for lsp"
   (setq lsp-clients-clangd-executable my-clangd-executable
