@@ -215,6 +215,42 @@
   :hook
   (after-init . xclip-mode))     ;; Enable xclip mode after initialization.
 
+;; ------------ TREE-SITTER ----------------------
+;; Emacs 30 only support tree-sitter API 14
+;; That's why we specify the versions so we control exactly what happens
+(setq treesit-language-source-alist
+      '(
+        (bash        "https://github.com/tree-sitter/tree-sitter-bash"    "v0.23.3" "src")
+        (c           "https://github.com/tree-sitter/tree-sitter-c"       "v0.23.3")
+        (cmake       "https://github.com/uyha/tree-sitter-cmake"          "v0.7.2")
+        (cpp         "https://github.com/tree-sitter/tree-sitter-cpp"     "v0.23.3")
+        (json        "https://github.com/tree-sitter/tree-sitter-json"    "v0.24.8")
+        (python      "https://github.com/tree-sitter/tree-sitter-python"  "v0.23.3")
+        (rust        "https://github.com/tree-sitter/tree-sitter-rust"    "v0.23.3")
+        (toml        "https://github.com/ikatyang/tree-sitter-toml"       "v0.5.1")
+        (yaml        "https://github.com/ikatyang/tree-sitter-yaml"       "v0.5.0")
+))
+
+;; Auto-install missing grammars once (you can eval this block manually)
+(dolist (lang treesit-language-source-alist)
+  (unless (treesit-language-available-p (car lang))
+    (treesit-install-language-grammar (car lang))))
+
+;; Prefer the new ts-modes everywhere
+(setq major-mode-remap-alist
+      '(
+        ;; (c++-mode        . c++-ts-mode)
+        ;; (c-mode          . c-ts-mode)
+        ;; (cmake-mode      . cmake-ts-mode)
+        (json-mode       . json-ts-mode)
+        (python-mode     . python-ts-mode)
+        (rust-mode       . rust-ts-mode)
+        (sh-mode         . bash-ts-mode)
+        (toml-mode       . toml-ts-mode)
+        (yaml-mode       . yaml-ts-mode)
+))
+
+
 ;; ------------ MAC SPECIFIC WORKAROUND ------------------------
 (use-package exec-path-from-shell
   :ensure t
@@ -310,7 +346,7 @@
   (indent-region (point-min) (point-max)))
 
 (defcustom prelude-indent-sensitive-modes
-  '(coffee-mode python-mode slim-mode haml-mode yaml-mode)
+  '(coffee-mode python-mode python-ts-mode slim-mode haml-mode yaml-mode)
   "Modes for which auto-indenting is suppressed."
   :type 'list)
 
@@ -471,7 +507,7 @@ point reaches the beginning or end of the buffer, stop there."
   :config
   (setq highlight-indent-guides-method 'character)
   :hook
-  (python-mode . highlight-indent-guides-mode))
+  (python-ts-mode . highlight-indent-guides-mode))
 
 (use-package multiple-cursors
   )
@@ -826,13 +862,13 @@ point reaches the beginning or end of the buffer, stop there."
   (lsp-deferred)
   (require 'dap-python))
 
-(add-hook 'python-mode-hook 'my-python-hook)
+(add-hook 'python-ts-mode-hook 'my-python-hook)
 
 (use-package lsp-pyright
   :ensure t
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp-deferred)))
+  :hook (python-ts-mode . (lambda ()
+                            (require 'lsp-pyright)
+                            (lsp-deferred)))
   :config
   (setq lsp-pyright-use-library-code-for-types t) ;; set this to nil if getting too many false positive type errors
   (setq lsp-pyright-stub-path (concat (getenv "HOME") "/externals/python-type-stubs"))

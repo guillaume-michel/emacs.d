@@ -18,7 +18,8 @@ rm -rf \
    places \
    recentf \
    transient \
-   .dap-breakpoints
+   .dap-breakpoints \
+   tree-sitter
 
 # cleanup straight
 rm -rf straight/build-cache.el straight/build
