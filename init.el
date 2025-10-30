@@ -502,70 +502,134 @@ point reaches the beginning or end of the buffer, stop there."
 
 (add-to-list 'auto-mode-alist '("\\.feature\\'" . pickle-mode))
 
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1)
-  (setq ivy-re-builders-alist
-        '((t . ivy--regex-ignore-order)))
-  )
-
-(use-package counsel
-  :diminish
-  :bind (("C-M-j" . 'counsel-switch-buffer)
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history))
+;;; VERTICO
+;; Vertico enhances the completion experience in Emacs by providing a
+;; vertical selection interface for both buffer and minibuffer completions.
+;; Unlike traditional minibuffer completion, which displays candidates
+;; in a horizontal format, Vertico presents candidates in a vertical list,
+;; making it easier to browse and select from multiple options.
+;;
+;; In buffer completion, `switch-to-buffer' allows you to select from open buffers.
+;; Vertico streamlines this process by displaying the buffer list in a way that
+;; improves visibility and accessibility. This is particularly useful when you
+;; have many buffers open, allowing you to quickly find the one you need.
+;;
+;; In minibuffer completion, such as when entering commands or file paths,
+;; Vertico helps by showing a dynamic list of potential completions, making
+;; it easier to choose the correct one without typing out the entire string.
+(use-package vertico
+  :ensure t
+  :hook
+  (after-init . vertico-mode)           ;; Enable vertico after Emacs has initialized.
   :custom
-  (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
+  (vertico-count 10)                    ;; Number of candidates to display in the completion list.
+  (vertico-resize nil)                  ;; Disable resizing of the vertico minibuffer.
+  (vertico-cycle nil)                   ;; Do not cycle through candidates when reaching the end of the list.
   :config
-  (counsel-mode 1))
+  ;; Enable vertico-directory extras for file/path editing in the minibuffer.
+  (require 'vertico-directory)
 
-(use-package ivy-rich
-  :after counsel
+  ;; Clean up things like // and /../ in paths as you edit
+  (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
+
+  :bind (:map vertico-map
+              ("DEL" . vertico-directory-delete-char)))
+
+;;; ORDERLESS
+;; Orderless enhances completion in Emacs by allowing flexible pattern matching.
+;; It works seamlessly with Vertico, enabling you to use partial strings and
+;; regular expressions to find files, buffers, and commands more efficiently.
+;; This combination provides a powerful and customizable completion experience.
+(use-package orderless
+  :ensure t
+  :defer t                                    ;; Load Orderless on demand.
+  :after vertico                              ;; Ensure Vertico is loaded before Orderless.
   :init
-  (ivy-rich-mode 1))
+  (setq completion-styles '(orderless basic)  ;; Set the completion styles.
+        completion-category-defaults nil      ;; Clear default category settings.
+        completion-category-overrides '((file (styles partial-completion))))) ;; Customize file completion styles.
 
-(use-package ivy-prescient
-  :after counsel
-  :custom
-  (ivy-prescient-enable-filtering nil)
-  :config
-  ;; Uncomment the following line to have sorting remembered across sessions!
-  ;(prescient-persist-mode 1)
-  (ivy-prescient-mode 1))
+;;; MARGINALIA
+;; Marginalia enhances the completion experience in Emacs by adding
+;; additional context to the completion candidates. This includes
+;; helpful annotations such as documentation and other relevant
+;; information, making it easier to choose the right option.
+(use-package marginalia
+  :ensure t
+  :hook
+  (after-init . marginalia-mode))
 
-(use-package ivy-hydra
-  :defer t
-  :after hydra)
-
-(use-package flx  ;; Improves sorting for fuzzy-matched results
-  :after ivy
+;;; CONSULT
+;; Consult provides powerful completion and narrowing commands for Emacs.
+;; It integrates well with other completion frameworks like Vertico, enabling
+;; features like previews and enhanced register management. It's useful for
+;; navigating buffers, files, and xrefs with ease.
+;; NOTE(gmichel): `consult-line` is the equivalent of ivy swiper
+(use-package consult
+  :ensure t
   :defer t
   :init
-  (setq ivy-flx-limit 10000))
+  ;; Enhance register preview with thin lines and no mode line.
+  (advice-add #'register-preview :override #'consult-register-window)
 
-(use-package helpful
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
+  ;; Use Consult for xref locations with a preview feature.
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+  :bind (("C-s" . consult-line)))
+
+;;; EMBARK
+;; Embark provides a powerful contextual action menu for Emacs, allowing
+;; you to perform various operations on completion candidates and other items.
+;; It extends the capabilities of completion frameworks by offering direct
+;; actions on the candidates.
+;; Just `<leader> .' over any text, explore it :)
+(use-package embark
+  :ensure t
+
   :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+
+  :init
+
+  ;; Optionally replace the key help with a completing-read interface
+  (setq prefix-help-command #'embark-prefix-help-command)
+
+  ;; Show the Embark target at point via Eldoc. You may adjust the
+  ;; Eldoc strategy, if you want to see the documentation from
+  ;; multiple providers. Beware that using this can be a little
+  ;; jarring since the message shown in the minibuffer can be more
+  ;; than one line, causing the modeline to move up and down:
+
+  ;; (add-hook 'eldoc-documentation-functions #'embark-eldoc-first-target)
+  ;; (setq eldoc-documentation-strategy #'eldoc-documentation-compose-eagerly)
+
+  ;; Add Embark to the mouse context menu. Also enable `context-menu-mode'.
+  ;; (context-menu-mode 1)
+  ;; (add-hook 'context-menu-functions #'embark-context-menu 100)
+
+  :config
+
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :ensure t ; only need to install it, embark loads it after consult if found
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
+;;; EMBARK-CONSULT
+;; Embark-Consult provides a bridge between Embark and Consult, ensuring
+;; that Consult commands, like previews, are available when using Embark.
+(use-package embark-consult
+  :ensure t
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode)) ;; Enable preview in Embark collect mode.
 
 ;; setup term
 (use-package vterm
@@ -644,8 +708,6 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package lsp-treemacs
   :after lsp)
-
-(use-package lsp-ivy)
 
 (use-package company
   :after lsp-mode
@@ -914,7 +976,6 @@ point reaches the beginning or end of the buffer, stop there."
   (setq projectile-mode-line "Projectile")
   (add-to-list 'projectile-other-file-alist '("h" "cpp" "c" "cc" "cu"))
   (add-to-list 'projectile-other-file-alist '("cu" "h"))
-  :custom ((projectile-completion-system 'ivy))
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :init
@@ -923,9 +984,6 @@ point reaches the beginning or end of the buffer, stop there."
     (setq projectile-project-search-path '("~/work")))
   (setq projectile-switch-project-action #'projectile-dired)
   (setq projectile-enable-caching t))
-
-(use-package counsel-projectile
-  :config (counsel-projectile-mode))
 
 ;; compilation helpers
 ;; stop at first error or keep scrolling
