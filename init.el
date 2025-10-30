@@ -874,6 +874,34 @@ point reaches the beginning or end of the buffer, stop there."
   (setq lsp-pyright-stub-path (concat (getenv "HOME") "/externals/python-type-stubs"))
   )
 
+;; format on save with black
+(use-package blacken
+  :ensure t)
+
+(use-builtin-package python
+  :preface
+  ;; Define the one-shot "save without running black" helper
+  (defun orilla/save-without-blacken ()
+    "Save current buffer without running blacken/black."
+    (interactive)
+    (let ((orig-hooks before-save-hook))
+      ;; Temporarily remove blacken-buffer from before-save-hook
+      (setq-local before-save-hook
+                  (remove #'blacken-buffer before-save-hook))
+      (unwind-protect
+          (save-buffer)
+        ;; Restore hooks so future saves still format
+        (setq-local before-save-hook orig-hooks))))
+
+  :hook
+  ;; Turn on blacken-mode automatically in python-ts-mode buffers
+  (python-ts-mode . blacken-mode)
+
+  :bind
+  ;; Add the special save key ONLY in python-ts-mode
+  (:map python-ts-mode-map
+        ("C-x C-M-s" . orilla/save-without-blacken)))
+
 ;; setup rust language support
 ;; Conf for Rust programming
 

@@ -3,6 +3,7 @@
  ("all-the-icons.el" . "4778632b29c8c8d2b7cd9ce69535d0be01d846f9")
  ("avy" . "933d1f36cca0f71e4acb5fac707e9ae26c536264")
  ("bind-key" . "ec9d0505febe2556b47457355763f5f1408a35ac")
+ ("blacken" . "7d8dc2ae21257e91b7646a6f3bb97c8b8bd95434")
  ("browse-kill-ring" . "03cc18c08a549568edb6bc710c307c19bc507ef3")
  ("bui.el" . "f3a137628e112a91910fd33c0cff0948fa58d470")
  ("capnproto" . "164284a476eee4bfbcf7cce2a9a82fb156504210")
