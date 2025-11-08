@@ -732,6 +732,7 @@ point reaches the beginning or end of the buffer, stop there."
   (lsp-prefer-flymake nil)
   :config
   (lsp-enable-which-key-integration t)
+  (setq lsp-diagnostics-provider :flycheck)
   )
 
 (use-package lsp-ui
@@ -772,8 +773,11 @@ point reaches the beginning or end of the buffer, stop there."
   :defer t
   :hook (lsp-mode . flycheck-mode)
   :config
+  (setq flycheck-temp-prefix ".flycheck")
+  (setq temporary-file-directory (expand-file-name "tmp/" user-emacs-directory))
   ;; only check on save
-  (setq flycheck-check-syntax-automatically '(mode-enabled save)))
+  ;;(setq flycheck-check-syntax-automatically '(mode-enabled save))
+  )
 
 ;; Yasnippet
 (use-package yasnippet
@@ -857,21 +861,25 @@ point reaches the beginning or end of the buffer, stop there."
 
 (add-hook 'c++-mode-hook (lambda ()
                            (require 'dap-cpptools)))
-;; Use clangcheck for flycheck in C++ mode
-(defun my-select-clangcheck-for-checker ()
-  "Select clang-check for flycheck's checker."
-  (require 'flycheck-clangcheck)
-  (flycheck-set-checker-executable 'c/c++-clangcheck my-clang-check-executable)
-  (flycheck-select-checker 'c/c++-clangcheck))
+;; ;; Use clangcheck for flycheck in C++ mode
+;; (defun my-select-clangcheck-for-checker ()
+;;   "Select clang-check for flycheck's checker."
+;;   (require 'flycheck-clangcheck)
+;;   (flycheck-set-checker-executable 'c/c++-clangcheck my-clang-check-executable)
+;;   (flycheck-select-checker 'c/c++-clangcheck))
 
-(use-package flycheck-clangcheck
-  :ensure t
-  :config
-  (setq flycheck-clangcheck-analyze t
-        flycheck-clangcheck-extra-arg-before '("-std=c++2a")
-        ;; flycheck-clangcheck-extra-arg '("-Xanalyzer" "-analyzer-output=text")
-        )
-  :hook (c++-mode . my-select-clangcheck-for-checker))
+;; (use-package flycheck-clangcheck
+;;   :ensure t
+;;   :config
+;;   (setq flycheck-clangcheck-analyze t
+;;         flycheck-clangcheck-extra-arg-before '("-std=c++2a")
+;;         ;; flycheck-clangcheck-extra-arg '("-Xanalyzer" "-analyzer-output=text")
+;;         )
+;;   :hook (c++-mode . my-select-clangcheck-for-checker))
+
+(with-eval-after-load 'flycheck
+  ;; Don’t run native C/C++ checkers (clang/clang-tidy) to avoid temp files
+  (setq-default flycheck-disabled-checkers '(c/c++-clang c/c++-gcc c/c++-cppcheck c/c++-clang-tidy)))
 
 ;; setup python language support
 (defun my-python-hook ()
