@@ -611,6 +611,12 @@ point reaches the beginning or end of the buffer, stop there."
   ;; Use Consult for xref locations with a preview feature.
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
+
+;; When the Consult prompt (or any minibuffer) is up,
+  ;; make C-s/C-r walk the minibuffer history.
+  (dolist (map (list minibuffer-local-map minibuffer-local-completion-map))
+    (define-key map (kbd "C-s") #'previous-history-element) ; recall last query
+    (define-key map (kbd "C-r") #'next-history-element))    ; go forward
   :bind (("C-s" . consult-line)))
 
 ;;; EMBARK
