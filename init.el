@@ -1058,6 +1058,13 @@ point reaches the beginning or end of the buffer, stop there."
                                (setq-local compilation-read-command nil)
                                (call-interactively 'compile)))
 
+;; Stay in the current window after M-x compile
+(advice-add 'compile :around
+  (lambda (orig &rest args)
+    (let ((w (selected-window)))
+      (apply orig args)
+      (select-window w))))
+
 ;; Package: projectile
 (use-package projectile
   :diminish
