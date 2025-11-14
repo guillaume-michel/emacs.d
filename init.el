@@ -324,7 +324,7 @@
   :bind (("C-`"   . popper-toggle)
          ;; in terminal Emacs, C-` is interpreted as C-@
          ;; this way, we have the same bindings in terminal and GUI
-         ("C-@"   . popper-toggle)
+         ;;("C-@"   . popper-toggle)
          ("M-`"   . popper-cycle)
          ("C-M-`" . popper-toggle-type))
   :init
