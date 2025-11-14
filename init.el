@@ -416,14 +416,25 @@ point reaches the beginning or end of the buffer, stop there."
   (setq sp-highlight-wrap-tag-overlay nil)
   (sp-use-paredit-bindings))
 
-(use-package origami
-  :hook (prog-mode . origami-mode)
+(use-package treesit-fold
+  :straight (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
+  :commands (treesit-fold-toggle
+             treesit-fold-open
+             treesit-fold-close
+             treesit-fold-open-all
+             treesit-fold-close-all)
+  :init
+  ;; Enable folding automatically for buffers that have a treesit parser
+  ;; and are supported by treesit-fold.
+  (global-treesit-fold-mode 1)
   :config
-  (general-define-key
-   "<f9>" '(origami-toggle-node :which-key "toggle origami hide/show node")))
+  ;; Optional: show number of lines in folded overlays
+  (setq treesit-fold-line-count-show t)
 
-(use-package lsp-origami
-  :hook (lsp-after-open . lsp-origami-try-enable))
+  ;; Use F9 to toggle the fold at point (very similar to origami-toggle-node).
+  (general-define-key
+   :keymaps 'treesit-fold-mode-map
+   "<f9>" '(treesit-fold-toggle :which-key "toggle treesit fold")))
 
 ;; Package zygospore
 (use-package zygospore
@@ -864,7 +875,7 @@ point reaches the beginning or end of the buffer, stop there."
 (defun my-lsp-c++-hook ()
   "Configure clangd as C++ backend for lsp"
   (setq lsp-clients-clangd-executable my-clangd-executable
-        lsp-clients-clangd-args (list (concat "--query-driver=" llvm-root "**") "-background-index" "--log=verbose" "--folding-ranges" "--clang-tidy" "--inlay-hints" "-j$(($(nproc) / 2))" "--header-insertion=never" "--header-insertion-decorators" "--completion-style=detailed")))
+        lsp-clients-clangd-args (list (concat "--query-driver=" llvm-root "**") "-background-index" "--log=verbose" "--clang-tidy" "--inlay-hints" "-j$(($(nproc) / 2))" "--header-insertion=never" "--header-insertion-decorators" "--completion-style=detailed")))
 
 (add-hook 'lsp-mode 'my-lsp-c++-hook)
 
