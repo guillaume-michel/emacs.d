@@ -1082,7 +1082,12 @@ point reaches the beginning or end of the buffer, stop there."
   (when (file-directory-p "~/work")
     (setq projectile-project-search-path '("~/work")))
   (setq projectile-switch-project-action #'projectile-dired)
-  (setq projectile-enable-caching t))
+  ;; Use native indexing + caching
+  (setq projectile-indexing-method 'native
+        projectile-enable-caching t
+        ;; put cache somewhere writable and stable
+        projectile-cache-file (expand-file-name "projectile.cache" user-emacs-directory)
+        projectile-known-projects-file (expand-file-name "projectile-bookmarks.eld" user-emacs-directory)))
 
 ;; compilation helpers
 ;; stop at first error or keep scrolling
