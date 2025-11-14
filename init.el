@@ -239,8 +239,8 @@
 ;; Prefer the new ts-modes everywhere
 (setq major-mode-remap-alist
       '(
-        ;; (c++-mode        . c++-ts-mode)
-        ;; (c-mode          . c-ts-mode)
+        (c++-mode        . c++-ts-mode)
+        (c-mode          . c-ts-mode)
         ;; (cmake-mode      . cmake-ts-mode)
         (json-mode       . json-ts-mode)
         (python-mode     . python-ts-mode)
@@ -818,34 +818,43 @@ point reaches the beginning or end of the buffer, stop there."
 (setq my-clangd-executable (expand-file-name "bin/clangd" llvm-root))
 (setq my-clang-check-executable (expand-file-name "bin/clang-check" llvm-root))
 
-;; Google style by default
-(use-package google-c-style
-  :hook ((c-mode-common . google-set-c-style)
-         (c-mode-common . google-make-newline-indent)))
+;; for C and C++
+;; in Emacs 29/30:
+;;
+;; c++-ts-mode is just a function, autoloaded from the file c-ts-mode.el.
+;;
+;; The file actually provides the feature c-ts-mode, not c++-ts-mode.
+;; So:
+;; (require 'c++-ts-mode) → fails → Error (use-package): Cannot load c++-ts-mode
+;; Later, when you open a C++ file, c++-ts-mode is called via its autoload, c-ts-mode.el is loaded, and everything works fine
+;; So the mode itself is OK; it’s just use-package being too literal.
+(use-builtin-package c-ts-mode
+    :preface
+    (defun orilla/c-ts-indent-style()
+        `(;; do not indent namespace children
+          ((n-p-gp nil "declaration_list" "namespace_definition") parent-bol 0)
 
-;; adjust google style to respect my tab-width
-(add-hook 'c++-mode-hook (lambda ()
-                           (setq c-basic-offset tab-width)))
+          ;; append to bsd style
+          ,@(alist-get 'bsd (c-ts-mode--indent-styles 'cpp))))
+    :config
+    (setq c-ts-mode-indent-offset 4)
+    (setq c-ts-mode-indent-style #'orilla/c-ts-indent-style))
 
-(use-package modern-cpp-font-lock
-  :ensure t
-  :hook (c++-mode . modern-c++-font-lock-mode))
-
-(add-to-list 'auto-mode-alist '("\\.ipp\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.ipp\\'" . c++-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-ts-mode))
 
 ;; for CUDA
-(add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.cuh\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.cuh\\'" . c++-ts-mode))
 
 ;; LSP with C++
-(add-hook 'c++-mode-hook 'lsp-deferred)
+(add-hook 'c++-ts-mode-hook 'lsp-deferred)
 
 (use-package clang-format
   :ensure t
   :hook
-  (c++-mode . my/c++-format-on-save)
-  (c-mode   . my/c++-format-on-save)
+  (c++-ts-mode . my/c++-format-on-save)
+  (c-ts-mode   . my/c++-format-on-save)
   :config
   (defun my/c++-format-on-save ()
     ;; Run clang-format before saving, but only in this buffer
@@ -859,8 +868,8 @@ point reaches the beginning or end of the buffer, stop there."
 
 (add-hook 'lsp-mode 'my-lsp-c++-hook)
 
-(add-hook 'c++-mode-hook (lambda ()
-                           (require 'dap-cpptools)))
+(add-hook 'c++-ts-mode-hook (lambda ()
+                              (require 'dap-cpptools)))
 ;; ;; Use clangcheck for flycheck in C++ mode
 ;; (defun my-select-clangcheck-for-checker ()
 ;;   "Select clang-check for flycheck's checker."
@@ -1112,9 +1121,21 @@ point reaches the beginning or end of the buffer, stop there."
   :straight '(cmake-integration :type git :host github :repo "darcamo/cmake-integration"
             :fork (:host github
                    :repo "guillaume-michel/cmake-integration"))
+  ;; This runs before the package is loaded.
+  :init
+  (add-hook 'c++-ts-mode-hook
+            (lambda ()
+              ;; Load cmake-integration the first time we visit a C++ buffer.
+              ;; When it loads, the :bind :map block below is applied.
+              (require 'cmake-integration)))
+  (add-hook 'c-ts-mode-hook
+            (lambda ()
+              ;; Load cmake-integration the first time we visit a C buffer.
+              ;; When it loads, the :bind :map block below is applied.
+              (require 'cmake-integration)))
   :config
   (setq cmake-integration-create-compile-commands-link nil)
-  :bind (:map c++-mode-map
+  :bind (:map c++-ts-mode-map
               ([S-f5] . cmake-integration-save-and-compile) ;; Ask for the target name and compile it
               ([f5] . cmake-integration-save-and-compile-last-target) ;; Recompile the last target
               ([S-f12] . cmake-integration-run-last-target-with-arguments) ;; Ask for command line parameters to run the program
@@ -1123,13 +1144,13 @@ point reaches the beginning or end of the buffer, stop there."
               ([f7] . cmake-integration-cmake-reconfigure) ;; Call CMake with the last chosen preset
               ))
 
-(add-hook 'c++-mode-hook
+(add-hook 'c++-ts-mode-hook
       (lambda ()
-        (define-key c++-mode-map (kbd "<f6>") 'kill-compilation)))
+        (define-key c++-ts-mode-map (kbd "<f6>") 'kill-compilation)))
 
-(add-hook 'c-mode-hook
+(add-hook 'c-ts-mode-hook
       (lambda ()
-        (define-key c-mode-map (kbd "<f6>") 'kill-compilation)))
+        (define-key c-ts-mode-map (kbd "<f6>") 'kill-compilation)))
 
 ;; NOTE(gmichel): This messes up popper placement for the *compilation* buffer at the bottom of the frame
 ;; assure the compilation buffer is only opened once when multiple frames are open
