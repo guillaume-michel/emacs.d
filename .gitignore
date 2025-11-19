@@ -9,3 +9,10 @@ straight/build-cache.el
 straight/build
 straight/repos
 eln-cache/
+.lsp-session-v1
+history
+places
+recentf
+transient/
+.dap-breakpoints
+tree-sitter/
