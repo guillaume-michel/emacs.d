@@ -894,6 +894,7 @@ point reaches the beginning or end of the buffer, stop there."
 
 (use-package lsp-pyright
   :ensure t
+  :custom (lsp-pyright-langserver-command "pyright")
   :hook (python-ts-mode . (lambda ()
                             (require 'lsp-pyright)
                             (lsp-deferred)))
@@ -904,6 +905,10 @@ point reaches the beginning or end of the buffer, stop there."
 
 ;; format on save with black
 (use-package blacken
+  :ensure t)
+
+;; format on save with ruff
+(use-package ruff-format
   :ensure t)
 
 (use-builtin-package python
@@ -923,7 +928,8 @@ point reaches the beginning or end of the buffer, stop there."
 
   :hook
   ;; Turn on blacken-mode automatically in python-ts-mode buffers
-  (python-ts-mode . blacken-mode)
+  ;; (python-ts-mode . blacken-mode)
+  (python-ts-mode . ruff-format-on-save-mode)
 
   :bind
   ;; Add the special save key ONLY in python-ts-mode
