@@ -730,6 +730,8 @@ point reaches the beginning or end of the buffer, stop there."
   (lsp-semantic-tokens-enable nil)                      ;; Disable semantic tokens.
   (lsp-auto-guess-root t)
   (lsp-prefer-flymake nil)
+  (lsp-format-buffer-on-save t)
+  (lsp-format-buffer-on-save-list '(python-ts-mode python-mode))
   :config
   (lsp-enable-which-key-integration t)
   (setq lsp-diagnostics-provider :flycheck)
@@ -908,8 +910,14 @@ point reaches the beginning or end of the buffer, stop there."
   :ensure t)
 
 ;; format on save with ruff
-(use-package ruff-format
-  :ensure t)
+;; (use-package ruff-format
+;;   :ensure t)
+
+(with-eval-after-load 'lsp-mode
+  (require 'lsp-ruff)
+  (setq lsp-ruff-server-command '("ruff" "server"))
+  (setq lsp-fix-all-on-save t)
+  (setq lsp-fix-all-on-save-list '(python-ts-mode python-mode)))
 
 (use-builtin-package python
   :preface
@@ -927,9 +935,11 @@ point reaches the beginning or end of the buffer, stop there."
         (setq-local before-save-hook orig-hooks))))
 
   :hook
-  ;; Turn on blacken-mode automatically in python-ts-mode buffers
-  ;; (python-ts-mode . blacken-mode)
-  (python-ts-mode . ruff-format-on-save-mode)
+  ;; ;; Turn on blacken-mode automatically in python-ts-mode buffers
+  ;; ;; (python-ts-mode . blacken-mode)
+  ;; (python-ts-mode . ruff-format-on-save-mode)
+  (python-ts-mode . (lambda ()
+                      (setq-local lsp-enabled-clients '(pyright ruff))))
 
   :bind
   ;; Add the special save key ONLY in python-ts-mode
